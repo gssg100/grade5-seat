@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>5학년 자리바꾸기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%AA%91%3C/text%3E%3C/svg%3E">
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f4f6fa; --card: #ffffff; --ink: #1c2230; --muted: #6a7385; --line: #e2e6ee; --soft: #f7f8fb;
+    --pri: #2f6fed; --pri-soft: #e8f0fe; --pri-ink: #1d4fc4;
+    --ok: #16924a; --ok-soft: #e6f6ec; --warn: #b45309; --warn-soft: #fff4e2; --bad: #c62828; --bad-soft: #fdecec;
+    --m: #e8f1ff; --m-line: #9ebcf3; --f: #fdeef2; --f-line: #eeaabb; --off: #eceef2;
+    --c1: #2f6fed; --c2: #0f9d8a; --me: #ffd54a;
+    --radius: 14px; --shadow: 0 1px 2px rgba(20,30,60,.06), 0 4px 14px rgba(20,30,60,.05);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font: 15px/1.55 -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+  button, input, select { font: inherit; color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 16px 16px 120px; }
+  .top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .top h1 { font-size: 20px; margin: 0; }
+  .top .sp { flex: 1; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; background: var(--pri-soft); color: var(--pri-ink); white-space: nowrap; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.bad { background: var(--bad-soft); color: var(--bad); } .pill.gray { background: var(--off); color: var(--muted); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .card h2 { font-size: 17px; margin: 0 0 10px; }
+  .card h3 { font-size: 15px; margin: 14px 0 8px; }
+  .muted { color: var(--muted); } .small { font-size: 13px; } .center { text-align: center; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+  .btn { border: 1px solid var(--line); background: var(--card); padding: 9px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+  .btn:hover { border-color: #c8cfdc; }
+  .btn.pri { background: var(--pri); border-color: var(--pri); color: #fff; }
+  .btn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .btn.bad { background: var(--card); border-color: #f0b8b8; color: var(--bad); }
+  .btn.big { padding: 14px 22px; font-size: 17px; border-radius: 12px; }
+  .btn.sm { padding: 5px 10px; font-size: 13px; border-radius: 8px; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn.link { border: none; background: none; color: var(--pri-ink); padding: 4px 6px; }
+  input[type=text], input[type=number], input[type=password], select {
+    border: 1.5px solid var(--line); border-radius: 10px; padding: 9px 11px; background: #fff; width: 100%; }
+  input:focus, select:focus { outline: none; border-color: var(--pri); box-shadow: 0 0 0 3px var(--pri-soft); }
+  label.f { display: block; font-size: 13px; color: var(--muted); margin: 12px 0 5px; font-weight: 600; }
+  .notice { border-radius: 12px; padding: 11px 14px; font-size: 14px; margin-bottom: 12px; }
+  .notice.info { background: var(--pri-soft); color: var(--pri-ink); }
+  .notice.warn { background: var(--warn-soft); color: var(--warn); }
+  .notice.bad { background: var(--bad-soft); color: var(--bad); }
+  .notice.ok { background: var(--ok-soft); color: var(--ok); }
+  .admin-banner { position: sticky; top: 0; z-index: 30; background: #b91c1c; color: #fff; text-align: center; font-weight: 700; padding: 8px 12px; font-size: 14px; }
+
+  /* 반 고르기 */
+  .classes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .classes { grid-template-columns: repeat(3, 1fr); } }
+  .cls { border: 1.5px solid var(--line); background: var(--card); border-radius: 14px; padding: 16px 8px; text-align: center; cursor: pointer; box-shadow: var(--shadow); }
+  .cls b { display: block; font-size: 20px; }
+  .cls span { font-size: 12.5px; color: var(--muted); }
+  .cls.on { border-color: var(--pri); }
+  .cls:disabled { cursor: default; opacity: .55; box-shadow: none; }
+
+  /* 번호 고르기 */
+  .nums { display: grid; grid-template-columns: repeat(10, 1fr); gap: 7px; }
+  @media (max-width: 640px) { .nums { grid-template-columns: repeat(6, 1fr); } }
+  .num { border: 1.5px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 0 7px; cursor: pointer; text-align: center; font-weight: 700; font-size: 17px; line-height: 1.1; }
+  .num small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+  .num.taken { background: var(--soft); }
+  .num.sel { border-color: var(--pri); background: var(--pri); color: #fff; }
+  .num.sel small { color: #dbe6ff; }
+  .num:disabled { opacity: .35; cursor: default; }
+  .seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .seg button { border: none; background: #fff; padding: 10px 26px; font-weight: 700; cursor: pointer; font-size: 16px; }
+  .seg button.on { background: var(--pri); color: #fff; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+  .chip { border: 1px solid var(--line); background: var(--soft); border-radius: 999px; padding: 4px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+  .money-in { display: flex; gap: 8px; align-items: center; }
+  .money-in input { max-width: 150px; font-size: 20px; font-weight: 700; text-align: right; }
+
+  /* 배치도 */
+  .board { text-align: center; font-size: 12.5px; color: var(--muted); border: 1.5px dashed #cfd5e1; border-radius: 10px; padding: 5px; margin-top: 12px; letter-spacing: .3em; }
+  .board.top { margin-top: 0; margin-bottom: 12px; }
+  .badge-cls { display: inline-block; background: #2563eb; color: #fff; border-radius: 8px; padding: 2px 10px; font-size: 18px; margin-right: 6px; vertical-align: middle; }
+  .map { display: grid; gap: 12px; }
+  .unit { border: 1px solid var(--line); border-radius: 12px; padding: 7px; background: var(--soft); }
+  .unit .ut { font-size: 11.5px; color: var(--muted); margin: 0 2px 5px; font-weight: 600; }
+  .seats { display: grid; gap: 6px; }
+  .seat { position: relative; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; min-height: 60px; padding: 6px 4px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; user-select: none; }
+  .seat .sid { font-weight: 800; font-size: 17px; letter-spacing: .02em; }
+  .seat .nm { font-size: 13px; font-weight: 600; }
+  .seat .sub { font-size: 10.5px; color: var(--muted); }
+  .seat.M { background: var(--m); border-color: var(--m-line); }
+  .seat.F { background: var(--f); border-color: var(--f-line); }
+  .seat.off { background: var(--off); border-style: dashed; color: #9aa2b1; cursor: default; }
+  .seat.dis { opacity: .38; cursor: default; }
+  .seat.c1 { border: 3px solid var(--c1); background: #eef4ff; }
+  .seat.c2 { border: 3px solid var(--c2); background: #e9faf6; }
+  .seat .badge { position: absolute; top: -8px; right: -6px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; padding: 1px 7px; }
+  .seat.c1 .badge { background: var(--c1); } .seat.c2 .badge { background: var(--c2); }
+  .seat.me { border: 3px solid #e0a800; background: #fff6d6; box-shadow: 0 0 0 4px rgba(255,213,74,.45); }
+  .seat.sel { outline: 3px solid var(--pri); outline-offset: 2px; }
+  .seat.gM { box-shadow: inset 0 -5px 0 var(--m-line); } .seat.gF { box-shadow: inset 0 -5px 0 var(--f-line); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 13px; height: 13px; border-radius: 4px; vertical-align: -2px; margin-right: 4px; border: 1.5px solid; }
+
+  /* 신청 카드 */
+  .pick { border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #fff; cursor: pointer; }
+  .pick.on { border-color: var(--pri); box-shadow: 0 0 0 3px var(--pri-soft); }
+  .pick.c2.on { border-color: var(--c2); box-shadow: 0 0 0 3px #d6f5ef; }
+  .pick .ph { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+  .pick .pv { font-size: 24px; font-weight: 800; margin: 4px 0; min-height: 34px; }
+  .pick .pv.none { font-size: 14px; color: var(--muted); font-weight: 600; padding-top: 8px; }
+  .step { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .step button { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); font-size: 18px; font-weight: 800; cursor: pointer; }
+  .step .val { min-width: 64px; text-align: center; font-size: 20px; font-weight: 800; }
+  .hint { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .picks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 820px) { .picks { grid-template-columns: 1fr; } }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); z-index: 20; }
+  .bar .in { max-width: 1120px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .bar .st { font-size: 12px; color: var(--muted); } .bar .st b { display: block; font-size: 20px; color: var(--ink); }
+  .bar .st.over b { color: var(--bad); }
+  .bar .sp { flex: 1; }
+
+  /* 결과 */
+  .big-seat { font-size: 64px; font-weight: 900; letter-spacing: .03em; color: var(--pri-ink); line-height: 1.1; }
+  .done { font-size: 44px; }
+
+  /* 표 */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: middle; }
+  th { color: var(--muted); font-weight: 700; font-size: 12.5px; background: var(--soft); position: sticky; top: 0; }
+  td input, td select { padding: 6px 8px; border-radius: 8px; }
+  tr.dup td { background: var(--bad-soft); }
+  .scroll { overflow: auto; max-height: 560px; border: 1px solid var(--line); border-radius: 10px; }
+
+  /* 관리자 */
+  .steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 12px; }
+  .steps span { padding: 6px 12px; border-radius: 999px; background: var(--off); color: var(--muted); font-size: 13px; font-weight: 700; }
+  .steps span.done { background: var(--ok-soft); color: var(--ok); }
+  .steps span.now { background: var(--pri); color: #fff; }
+  .tabs { display: flex; gap: 4px; border-bottom: 1.5px solid var(--line); margin-bottom: 14px; flex-wrap: wrap; }
+  .tabs button { border: none; background: none; padding: 10px 14px; font-weight: 700; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1.5px; }
+  .tabs button.on { color: var(--pri-ink); border-bottom-color: var(--pri); }
+  .teacher-only { border: 2px dashed #e7a13a; background: #fffaf0; }
+  .kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .kv div { background: var(--soft); border-radius: 10px; padding: 8px 12px; } .kv b { display: block; font-size: 20px; }
+  .subm { display: flex; flex-wrap: wrap; gap: 6px; }
+  .subm span { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; background: var(--off); color: var(--muted); }
+  .subm span.y { background: var(--ok-soft); color: var(--ok); }
+  .units-ed { display: flex; flex-wrap: wrap; gap: 6px; }
+  .units-ed .u { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 10px; padding: 4px 6px; background: #fff; font-size: 13px; }
+  .units-ed .u button { border: none; background: var(--soft); border-radius: 6px; width: 24px; height: 24px; cursor: pointer; font-weight: 800; }
+  .via { font-size: 10px; font-weight: 700; padding: 0 6px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--muted); }
+
+  /* 전광판 */
+  .tv { position: fixed; inset: 0; background: #fff; z-index: 100; overflow: auto; padding: 22px 28px; }
+  .tv h1 { text-align: center; font-size: 34px; margin: 0 0 14px; }
+  .tv .seat { min-height: 88px; } .tv .seat .sid { font-size: 15px; color: var(--muted); } .tv .seat .nm { font-size: 26px; font-weight: 800; }
+  .tv .close { position: fixed; top: 12px; right: 16px; }
+
+  /* 모달 · 토스트 */
+  .modal-bg { position: fixed; inset: 0; background: rgba(15,20,35,.45); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .modal { background: #fff; border-radius: 16px; max-width: 460px; width: 100%; padding: 20px 22px; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+  .modal h3 { margin: 0 0 10px; font-size: 18px; }
+  .modal .acts { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+  .toast { position: fixed; left: 50%; top: 18px; transform: translateX(-50%); z-index: 300; padding: 11px 18px; border-radius: 12px; font-weight: 700; box-shadow: var(--shadow); max-width: 90vw; }
+  .toast.ok { background: #16924a; color: #fff; } .toast.bad { background: #c62828; color: #fff; } .toast.info { background: #1c2230; color: #fff; }
+  .spin { display: inline-block; width: 16px; height: 16px; border: 2.5px solid #c9d3e6; border-top-color: var(--pri); border-radius: 50%; animation: sp 0.8s linear infinite; vertical-align: -3px; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .loading { text-align: center; padding: 40px; color: var(--muted); }
+
+  @media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+    .noprint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="boot" hidden></div>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), b = document.getElementById('boot');
+  b.dataset.mode = q.get('admin') ? 'admin' : 'student';
+  b.dataset.cls = q.get('ban') || '';
+})();
+</script>
+<div id="root"></div>
+<script>window.SEAT_API_URL = "https://script.google.com/macros/s/AKfycbwFB6EwkOnsliJ9FE86v66AjSvuxdNVKO0vn8MAYHP6Fc62r1l-e_3hMjqGVr1uW6_L/exec";</script>
+<script>
+/**
+ * =============================================================================
+ * 5학년 공용 자리바꾸기 — 배정 엔진 v4 (SeatEngine)
+ * -----------------------------------------------------------------------------
+ * - 순수 JavaScript: Google Apps Script(V8) · 브라우저 · Node.js 어디서나 동작
+ * - 우선권 없음. "가원 투자(확률권) + 랜덤"만 사용
+ * - 가원은 확률만 높여줌. 어떤 경우에도 100% 확정 불가 (랜덤표 R장이 항상 섞임)
+ * - 투자한 가원은 결과와 상관없이 전액 차감 (교사 고정석 학생, 무효 지망만 예외)
+ *
+ * 배정 순서
+ *   0. 교사 고정석
+ *   1. 1지망 추첨   : 자리마다 [지원자 추첨권 + 랜덤표 R장] 중 1장 뽑기
+ *   2. 2지망 추첨   : 1지망에서 떨어진 학생 대상, 같은 방식
+ *   3. 친구 추첨    : 친구가 앉은 짝/모둠에 빈자리가 있으면 [추첨권 vs 랜덤표]
+ *   4. 랜덤 배치    : 나머지 학생 무작위
+ *   (전 과정에서 성별 규칙 · 떨어뜨리기 쌍을 지킴)
+ *
+ * 추첨권 = 1장(지원 기본) + 투자 가원 1가원당 1장 (항목당 상한 maxBid)
+ * =============================================================================
+ */
+(function (root) {
+  'use strict';
+
+  var DEFAULTS = {
+    randomTickets: 10,   // 랜덤표 R: 클수록 운 요소 ↑ (최소 1)
+    maxBid: 20,          // 항목(1지망/2지망/친구)당 투자 상한
+    patternSamples: 200, // 성별 구성 후보 샘플 수
+    randomRetries: 60    // 떨어뜨리기 쌍 때문에 막힐 때 재시도 횟수
+  };
+
+  var LETTERS = 'ABCDEFGHIJ';
+
+  // ---------------------------------------------------------------------------
+  // 난수 (시드 고정 → 같은 시드면 같은 결과, 감사·재현용)
+  // ---------------------------------------------------------------------------
+  function makeRng(seed) {
+    // 시드를 한 번 섞어서(연속된 시드끼리도 결과가 비슷해지지 않도록)
+    var h = (Number(seed) >>> 0) || 1;
+    h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); h ^= h >>> 16;
+    var a = (h >>> 0) || 1;
+    for (var w = 0; w < 4; w++) { a = (a + 0x6D2B79F5) | 0; }
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function newSeed() { return (Math.floor(Math.random() * 4294967295) >>> 0) || 1; }
+  function shuffle(arr, rng) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(rng() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function pick(arr, rng) { return arr[Math.floor(rng() * arr.length)]; }
+  function toInt(v) { var n = parseInt(v, 10); return isNaN(n) || n < 0 ? 0 : n; }
+
+  // ---------------------------------------------------------------------------
+  // 배치 틀
+  // ---------------------------------------------------------------------------
+  function fill(n, v) { var a = []; for (var i = 0; i < n; i++) a.push(v); return a; }
+
+  var PRESETS = {
+    group4x6:      { name: '4인 모둠 × 6 (24석)',              units: fill(6, 4), perRow: 3 },
+    group4x5_5x1:  { name: '4인 모둠 × 5 + 5인 모둠 × 1 (25석)', units: fill(5, 4).concat([5]), perRow: 3 },
+    group5x5:      { name: '5인 모둠 × 5 (25석)',              units: fill(5, 5), perRow: 3 },
+    group6x4:      { name: '6인 모둠 × 4 (24석)',              units: fill(4, 6), perRow: 2 },
+    pair12:        { name: '짝 × 12 (24석)',                   units: fill(12, 2), perRow: 3 },
+    pair12_single1:{ name: '짝 × 12 + 혼자 자리 1 (25석)',       units: fill(12, 2).concat([1]), perRow: 3 },
+    pair13:        { name: '짝 × 13 (26석)',                   units: fill(13, 2), perRow: 3 },
+    single25:      { name: '혼자 자리 × 25 (25석)',             units: fill(25, 1), perRow: 5 }
+  };
+
+  /**
+   * spec = { units:[4,4,4,4,4,5], perRow:3, disabled:['6E'], labels:{'1':'창가 앞'} }
+   * 좌석 이름 = 묶음번호 + 알파벳 (예: 3B = 3번 묶음의 B자리)
+   */
+  function buildLayout(spec) {
+    var units = [], seats = {}, perRow = spec.perRow || 3;
+    var disabled = {};
+    (spec.disabled || []).forEach(function (s) { disabled[s] = true; });
+    (spec.units || []).forEach(function (size, i) {
+      var id = String(i + 1), ids = [];
+      for (var k = 0; k < size; k++) {
+        var sid = id + LETTERS[k];
+        ids.push(sid);
+        seats[sid] = { id: sid, unit: id, idx: k, active: !disabled[sid] };
+      }
+      var act = ids.filter(function (s) { return seats[s].active; });
+      units.push({
+        id: id, no: i + 1, size: size, seats: ids, activeSeats: act,
+        type: act.length <= 1 ? 'single' : (act.length === 2 ? 'pair' : 'group'),
+        label: (spec.labels && spec.labels[id]) || '',
+        row: Math.floor(i / perRow), col: i % perRow
+      });
+    });
+    var activeCount = Object.keys(seats).filter(function (s) { return seats[s].active; }).length;
+    return { units: units, seats: seats, perRow: perRow, activeCount: activeCount, spec: spec };
+  }
+
+  // ---------------------------------------------------------------------------
+  // 입력 정리 · 검증
+  // ---------------------------------------------------------------------------
+  /**
+   * input = {
+   *   layout,                         // buildLayout 결과
+   *   config: { genderMode:'auto'|'seat', pairRule:'mixed'|'same'|'free',
+   *             groupRule:'balance'|'free', seatGender:{'1A':'M'}, randomTickets, maxBid },
+   *   students: [{ no, name, gender:'M'|'F', money }],
+   *   apps: { [no]: { c1:{seat,amount}, c2:{seat,amount}, friend:{no,amount} } },
+   *   teacher: { fixed:{ [no]: seatId }, separate:[[no,no], ...] },
+   *   seed
+   * }
+   */
+  function prepare(input) {
+    var L = input.layout;
+    var cfg = {};
+    Object.keys(DEFAULTS).forEach(function (k) { cfg[k] = DEFAULTS[k]; });
+    Object.keys(input.config || {}).forEach(function (k) { cfg[k] = input.config[k]; });
+    cfg.randomTickets = Math.max(1, toInt(cfg.randomTickets) || DEFAULTS.randomTickets);
+    cfg.maxBid = Math.max(0, toInt(cfg.maxBid));
+    cfg.genderMode = cfg.genderMode === 'seat' ? 'seat' : 'auto';
+    cfg.pairRule = ['mixed', 'same'].indexOf(cfg.pairRule) >= 0 ? cfg.pairRule : 'free';
+    cfg.groupRule = cfg.groupRule === 'balance' ? 'balance' : 'free';
+    cfg.seatGender = cfg.seatGender || {};
+
+    var warnings = [];
+    var students = (input.students || []).map(function (s) {
+      return { no: String(s.no), name: String(s.name || ''), gender: s.gender === 'F' ? 'F' : 'M', money: toInt(s.money) };
+    });
+    var byNo = {};
+    students.forEach(function (s) { byNo[s.no] = s; });
+
+    var teacher = input.teacher || {};
+    var fixed = {}, reserved = {};
+    Object.keys(teacher.fixed || {}).forEach(function (no) {
+      var seat = teacher.fixed[no];
+      if (!byNo[no]) return;
+      if (!L.seats[seat] || !L.seats[seat].active) { warnings.push('고정석 무시: ' + no + '번 → ' + seat + ' (없는 자리)'); return; }
+      if (reserved[seat]) { warnings.push('고정석 중복: ' + seat); return; }
+      fixed[no] = seat; reserved[seat] = no;
+    });
+    var sepPartners = {};
+    (teacher.separate || []).forEach(function (p) {
+      var a = String(p[0]), b = String(p[1]);
+      if (!byNo[a] || !byNo[b] || a === b) return;
+      (sepPartners[a] = sepPartners[a] || []).push(b);
+      (sepPartners[b] = sepPartners[b] || []).push(a);
+    });
+
+    // 지망 · 친구 정리 (무효는 차감 없음)
+    var apps = {};
+    students.forEach(function (s) {
+      var raw = (input.apps || {})[s.no] || {};
+      var a = { c1: null, c2: null, friend: null, invalid: [] };
+      if (fixed[s.no]) { a.fixedIgnored = !!(raw.c1 || raw.c2 || raw.friend); apps[s.no] = a; return; }
+      function seatOk(c, label) {
+        if (!c || !c.seat) return null;
+        var seat = String(c.seat), amt = Math.min(toInt(c.amount), cfg.maxBid);
+        var st = L.seats[seat];
+        if (!st || !st.active) { a.invalid.push(label + ': 없는 자리 ' + seat); return null; }
+        if (reserved[seat]) { a.invalid.push(label + ': 교사 지정 자리 ' + seat); return null; }
+        if (cfg.genderMode === 'seat' && cfg.seatGender[seat] && cfg.seatGender[seat] !== s.gender) {
+          a.invalid.push(label + ': 성별이 맞지 않는 자리 ' + seat); return null;
+        }
+        return { seat: seat, amount: amt };
+      }
+      a.c1 = seatOk(raw.c1, '1지망');
+      a.c2 = seatOk(raw.c2, '2지망');
+      if (a.c2 && a.c1 && a.c2.seat === a.c1.seat) { a.invalid.push('2지망이 1지망과 같음'); a.c2 = null; }
+      if (a.c2 && !a.c1) { a.c1 = a.c2; a.c2 = null; }
+      if (raw.friend && raw.friend.no != null && String(raw.friend.no) !== '') {
+        var fno = String(raw.friend.no);
+        if (!byNo[fno] || fno === s.no) a.invalid.push('친구 번호 오류');
+        else a.friend = { no: fno, amount: Math.min(toInt(raw.friend.amount), cfg.maxBid) };
+      }
+      // 보유 가원 초과 시: 입력 순서(1지망→2지망→친구) 기준으로 넘치는 만큼 깎음
+      var budget = s.money;
+      ['c1', 'c2', 'friend'].forEach(function (k) {
+        if (!a[k]) return;
+        if (a[k].amount > budget) { a.invalid.push(k + ' 투자액이 보유 가원 초과 → ' + budget + '가원으로 조정'); a[k].amount = budget; }
+        budget -= a[k].amount;
+      });
+      apps[s.no] = a;
+    });
+
+    var M = students.filter(function (s) { return s.gender === 'M'; }).length;
+    var F = students.length - M;
+    if (L.activeCount < students.length) {
+      throw new Error('자리(' + L.activeCount + '석)가 학생 수(' + students.length + '명)보다 적습니다.');
+    }
+    if (cfg.genderMode === 'seat') {
+      var sm = 0, sf = 0, sa = 0;
+      Object.keys(L.seats).forEach(function (sid) {
+        if (!L.seats[sid].active) return;
+        var g = cfg.seatGender[sid];
+        if (g === 'M') sm++; else if (g === 'F') sf++; else sa++;
+      });
+      if (Math.max(0, M - sm) + Math.max(0, F - sf) > sa) {
+        throw new Error('좌석별 성별 지정이 학생 수와 맞지 않습니다. (남 ' + M + '명/남자석 ' + sm + ', 여 ' + F + '명/여자석 ' + sf + ', 공용석 ' + sa + ')');
+      }
+    }
+    return { L: L, cfg: cfg, students: students, byNo: byNo, fixed: fixed, reserved: reserved,
+             sepPartners: sepPartners, apps: apps, M: M, F: F, warnings: warnings };
+  }
+
+  // ---------------------------------------------------------------------------
+  // 성별 구성(패턴) — "묶음별 남/여 인원"만 정하고, 어느 자리에 앉을지는 추첨으로
+  // ---------------------------------------------------------------------------
+  function samplePattern(ctx, rng) {
+    var L = ctx.L, cfg = ctx.cfg, M = ctx.M, F = ctx.F, N = M + F;
+    var gov = {}; // unitId -> {M,F}
+    var groups = [], pairs = [], freeCap = 0;
+    L.units.forEach(function (u) {
+      if (!u.activeSeats.length) return;
+      if (u.type === 'group' && cfg.groupRule === 'balance') groups.push(u);
+      else if (u.type === 'pair' && cfg.pairRule !== 'free') pairs.push(u);
+      else freeCap += u.activeSeats.length;
+    });
+    var capG = groups.reduce(function (s, u) { return s + u.activeSeats.length; }, 0);
+    var Mv = M, Fv = F;
+    // 공용 묶음(규칙 없는 묶음)에 고정된 학생은 먼저 빼 둠
+    var govIds = {};
+    groups.concat(pairs).forEach(function (u) { govIds[u.id] = true; });
+    var fixA = { M: 0, F: 0 };
+    for (var fno in ctx.fixed) {
+      if (!govIds[L.seats[ctx.fixed[fno]].unit]) fixA[ctx.byNo[fno].gender]++;
+    }
+    Mv -= fixA.M; Fv -= fixA.F; freeCap -= (fixA.M + fixA.F); N = Mv + Fv;
+
+    // (1) 모둠 성비 밸런스
+    if (groups.length) {
+      var nG = Math.min(capG, N);
+      // 빈자리는 큰 모둠부터
+      var sizes = {};
+      groups.forEach(function (u) { sizes[u.id] = u.activeSeats.length; });
+      var empt = capG - nG;
+      while (empt > 0) {
+        var maxS = Math.max.apply(null, groups.map(function (u) { return sizes[u.id]; }));
+        var cands = groups.filter(function (u) { return sizes[u.id] === maxS; });
+        sizes[pick(cands, rng).id]--; empt--;
+      }
+      var exact = N ? nG * Mv / N : 0;
+      var MG = Math.floor(exact) + (rng() < exact - Math.floor(exact) ? 1 : 0);
+      MG = Math.max(Math.max(0, nG - Fv), Math.min(Mv, nG, MG));
+      // 최대 나머지 방식으로 모둠별 남학생 수
+      var alloc = groups.map(function (u) {
+        var e = nG ? sizes[u.id] * MG / nG : 0;
+        return { u: u, m: Math.floor(e), rem: e - Math.floor(e) + rng() * 1e-6 };
+      });
+      var left = MG - alloc.reduce(function (s, x) { return s + x.m; }, 0);
+      alloc.sort(function (a, b) { return b.rem - a.rem; });
+      for (var i = 0; i < alloc.length && left > 0; i++) {
+        if (alloc[i].m < sizes[alloc[i].u.id]) { alloc[i].m++; left--; }
+      }
+      alloc.forEach(function (x) {
+        gov[x.u.id] = { M: x.m, F: sizes[x.u.id] - x.m };
+      });
+      Mv -= MG; Fv -= (nG - MG);
+    }
+
+    // (2) 짝 규칙 (이성 짝 / 동성 짝)
+    if (pairs.length) {
+      var P = shuffle(pairs, rng), idx = 0;
+      var take = function (m, f) { gov[P[idx].id] = { M: m, F: f }; idx++; };
+      if (cfg.pairRule === 'mixed') {
+        var x = Math.min(Mv, Fv, P.length);
+        for (var k = 0; k < x; k++) take(1, 1);
+        Mv -= x; Fv -= x;
+        while (idx < P.length) {
+          if (Mv >= 2) { take(2, 0); Mv -= 2; }
+          else if (Fv >= 2) { take(0, 2); Fv -= 2; }
+          else break;
+        }
+      } else { // same
+        var a = Math.floor(Mv / 2), b = Math.floor(Fv / 2);
+        while (a + b > P.length) { if (a >= b) a--; else b--; }
+        var order = shuffle(fill(a, 'MM').concat(fill(b, 'FF')), rng);
+        order.forEach(function (t) { if (t === 'MM') take(2, 0); else take(0, 2); });
+        Mv -= 2 * a; Fv -= 2 * b;
+        // 홀수로 남은 1명씩 → 혼자 자리(공용석)가 부족하면 이성 짝 1개
+        if (Mv >= 1 && Fv >= 1 && Mv + Fv > freeCap && idx < P.length) { take(1, 1); Mv--; Fv--; }
+      }
+      // 남은 인원이 공용석보다 많으면 남은 짝에 1명씩(+빈자리)
+      while (Mv + Fv > freeCap && idx < P.length) {
+        if (Mv >= Fv && Mv > 0) { take(1, 0); Mv--; } else if (Fv > 0) { take(0, 1); Fv--; } else break;
+      }
+      while (idx < P.length) take(0, 0); // 완전히 빈 짝
+    }
+
+    if (Mv < 0 || Fv < 0 || Mv + Fv > freeCap) return null;
+    var pat = { gov: gov, quotaA: { M: Mv + fixA.M, F: Fv + fixA.F } };
+
+    // 고정석 학생이 들어갈 수 있는지 확인
+    var need = {};
+    for (var no in ctx.fixed) {
+      var seat = ctx.fixed[no], uid = L.seats[seat].unit, g = ctx.byNo[no].gender;
+      var key = gov[uid] ? uid : '_A';
+      need[key] = need[key] || { M: 0, F: 0 };
+      need[key][g]++;
+    }
+    for (var key2 in need) {
+      var q = key2 === '_A' ? pat.quotaA : gov[key2];
+      if (q.M < need[key2].M || q.F < need[key2].F) return null;
+    }
+    return pat;
+  }
+
+  function scorePattern(ctx, pat) {
+    var L = ctx.L, score = 0;
+    ctx.students.forEach(function (s) {
+      var a = ctx.apps[s.no];
+      [['c1', 1], ['c2', 0.5]].forEach(function (kw) {
+        var c = a[kw[0]];
+        if (!c) return;
+        var uid = L.seats[c.seat].unit;
+        var q = pat.gov[uid] || pat.quotaA;
+        if (q[s.gender] > 0) score += kw[1];
+      });
+    });
+    return score;
+  }
+
+  function choosePattern(ctx, rng) {
+    if (ctx.cfg.genderMode === 'seat') return { mode: 'seat' };
+    var hasRule = ctx.L.units.some(function (u) {
+      return (u.type === 'group' && ctx.cfg.groupRule === 'balance') || (u.type === 'pair' && ctx.cfg.pairRule !== 'free');
+    });
+    if (!hasRule) return { mode: 'free', gov: {}, quotaA: { M: ctx.M, F: ctx.F } };
+    var best = null, bestScore = -1;
+    for (var i = 0; i < ctx.cfg.patternSamples; i++) {
+      var p = samplePattern(ctx, rng);
+      if (!p) continue;
+      var sc = scorePattern(ctx, p);
+      if (sc > bestScore) { best = p; bestScore = sc; }
+    }
+    if (!best) {
+      ctx.warnings.push('성별 규칙을 고정석과 함께 만족할 수 없어 이번 배치는 성별 자유로 진행했습니다.');
+      return { mode: 'free', gov: {}, quotaA: { M: ctx.M, F: ctx.F } };
+    }
+    best.mode = 'auto';
+    return best;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 배치 상태
+  // ---------------------------------------------------------------------------
+  function State(ctx, pattern) {
+    this.ctx = ctx; this.pattern = pattern;
+    this.seatOcc = {}; this.stuSeat = {}; this.via = {};
+    this.unitRem = {};
+    for (var uid in (pattern.gov || {})) this.unitRem[uid] = { M: pattern.gov[uid].M, F: pattern.gov[uid].F };
+    this.quotaA = pattern.quotaA ? { M: pattern.quotaA.M, F: pattern.quotaA.F } : null;
+    // 좌석 지정 모드 카운터
+    if (pattern.mode === 'seat') {
+      var sg = ctx.cfg.seatGender, cnt = { M: 0, F: 0, A: 0 };
+      Object.keys(ctx.L.seats).forEach(function (sid) {
+        if (!ctx.L.seats[sid].active) return;
+        cnt[sg[sid] === 'M' ? 'M' : (sg[sid] === 'F' ? 'F' : 'A')]++;
+      });
+      this.seatCnt = cnt;
+      this.rem = { M: ctx.M, F: ctx.F };
+    }
+  }
+  State.prototype.clone = function () {
+    var s = Object.create(State.prototype);
+    s.ctx = this.ctx; s.pattern = this.pattern;
+    s.seatOcc = Object.assign({}, this.seatOcc);
+    s.stuSeat = Object.assign({}, this.stuSeat);
+    s.via = Object.assign({}, this.via);
+    s.unitRem = {};
+    for (var u in this.unitRem) s.unitRem[u] = { M: this.unitRem[u].M, F: this.unitRem[u].F };
+    s.quotaA = this.quotaA ? { M: this.quotaA.M, F: this.quotaA.F } : null;
+    if (this.seatCnt) { s.seatCnt = Object.assign({}, this.seatCnt); s.rem = Object.assign({}, this.rem); }
+    return s;
+  };
+  State.prototype.eligible = function (no, seat, ignoreSep) {
+    var ctx = this.ctx, st = ctx.L.seats[seat];
+    if (!st || !st.active || this.seatOcc[seat]) return false;
+    if (ctx.reserved[seat] && ctx.reserved[seat] !== no) return false;
+    var g = ctx.byNo[no].gender, uid = st.unit, self = this;
+    if (!ignoreSep) {
+      var sp = ctx.sepPartners[no] || [];
+      for (var i = 0; i < sp.length; i++) {
+        var ps = self.stuSeat[sp[i]];
+        if (ps && ctx.L.seats[ps].unit === uid) return false;
+      }
+    }
+    var mode = this.pattern.mode;
+    if (mode === 'seat') {
+      var sg = ctx.cfg.seatGender[seat] || 'A';
+      if (sg !== 'A' && sg !== g) return false;
+      // 가상 배치 후에도 나머지 학생이 앉을 수 있는지
+      var c = { M: this.seatCnt.M, F: this.seatCnt.F, A: this.seatCnt.A };
+      c[sg]--;
+      var r = { M: this.rem.M, F: this.rem.F }; r[g]--;
+      return Math.max(0, r.M - c.M) + Math.max(0, r.F - c.F) <= c.A;
+    }
+    var q = this.unitRem[uid] || this.quotaA;
+    return q[g] > 0;
+  };
+  State.prototype.place = function (no, seat, via) {
+    var ctx = this.ctx, g = ctx.byNo[no].gender, uid = ctx.L.seats[seat].unit;
+    this.seatOcc[seat] = no; this.stuSeat[no] = seat; this.via[no] = via;
+    if (this.pattern.mode === 'seat') {
+      var sg = ctx.cfg.seatGender[seat] || 'A';
+      this.seatCnt[sg]--; this.rem[g]--;
+    } else {
+      var q = this.unitRem[uid] || this.quotaA;
+      q[g]--;
+    }
+  };
+  State.prototype.emptySeats = function () {
+    var self = this, L = this.ctx.L;
+    return Object.keys(L.seats).filter(function (s) { return L.seats[s].active && !self.seatOcc[s]; });
+  };
+
+  // ---------------------------------------------------------------------------
+  // 추첨 한 번: [지원자 추첨권들 + 랜덤표 R장] 중 1장
+  // ---------------------------------------------------------------------------
+  function lottery(entries, R, rng) {
+    // entries: [{no, tickets}] → 당첨 no 또는 null(랜덤표)
+    var total = R;
+    entries.forEach(function (e) { total += e.tickets; });
+    var r = rng() * total;
+    for (var i = 0; i < entries.length; i++) {
+      r -= entries[i].tickets;
+      if (r < 0) return entries[i].no;
+    }
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 메인: 자리 뽑기
+  // ---------------------------------------------------------------------------
+  function runDraw(input) {
+    var seed = input.seed != null ? (Number(input.seed) >>> 0) || 1 : newSeed();
+    var rng = makeRng(seed);
+    var ctx = prepare(input);
+    var L = ctx.L, cfg = ctx.cfg, R = cfg.randomTickets;
+    var pattern = choosePattern(ctx, rng);
+    var S = new State(ctx, pattern);
+    var log = [];
+
+    // 0. 교사 고정석
+    Object.keys(ctx.fixed).forEach(function (no) {
+      var seat = ctx.fixed[no];
+      if (S.eligible(no, seat, true)) S.place(no, seat, 'fixed');
+      else {
+        S.seatOcc[seat] = no; S.stuSeat[no] = seat; S.via[no] = 'fixed';
+        if (S.pattern.mode === 'seat') {
+          S.seatCnt[ctx.cfg.seatGender[seat] || 'A']--; S.rem[ctx.byNo[no].gender]--;
+        }
+        ctx.warnings.push(no + '번 고정석(' + seat + ')이 성별 규칙과 맞지 않지만 교사 지정대로 앉혔습니다.');
+      }
+    });
+
+    // 1·2. 지망 추첨
+    ['c1', 'c2'].forEach(function (key) {
+      var bySeat = {};
+      ctx.students.forEach(function (s) {
+        var c = ctx.apps[s.no][key];
+        if (c && !S.stuSeat[s.no]) (bySeat[c.seat] = bySeat[c.seat] || []).push({ no: s.no, tickets: 1 + c.amount });
+      });
+      shuffle(Object.keys(bySeat), rng).forEach(function (seat) {
+        var entries = bySeat[seat].filter(function (e) { return !S.stuSeat[e.no] && S.eligible(e.no, seat); });
+        if (!entries.length || S.seatOcc[seat]) return;
+        var win = lottery(entries, R, rng);
+        log.push({ round: key === 'c1' ? '1지망' : '2지망', seat: seat,
+                   entries: entries.map(function (e) { return e.no + ':' + e.tickets; }).join(', '), random: R, winner: win || '랜덤표' });
+        if (win) S.place(win, seat, key);
+      });
+    });
+
+    // 3·4. 친구 추첨 + 랜덤 배치 (떨어뜨리기 쌍 때문에 막히면 재시도)
+    var base = S, done = null, attempt;
+    for (attempt = 0; attempt <= cfg.randomRetries; attempt++) {
+      var T = base.clone(), ok = true, flog = [];
+      // (a) 친구 추첨 — 랜덤 배치 전에 먼저 (빈자리가 가장 많을 때)
+      shuffle(ctx.students, rng).forEach(function (s) {
+        var A = s.no, fr = ctx.apps[A].friend;
+        if (!fr) return;
+        var B = fr.no, aIn = !!T.stuSeat[A], bIn = !!T.stuSeat[B];
+        if (aIn && bIn) { flog.push({ round: '친구', from: A, to: B, result: '둘 다 이미 자리 있음' }); return; }
+        var win = lottery([{ no: A, tickets: 1 + fr.amount }], R, rng);
+        var entry = { round: '친구', from: A, to: B, tickets: 1 + fr.amount, random: R, result: win ? '성공' : '랜덤표' };
+        flog.push(entry);
+        if (!win) return;
+        var unitSeats = function (no) { return L.units[Number(L.seats[T.stuSeat[no]].unit) - 1].activeSeats; };
+        if (aIn || bIn) {
+          // 한 명만 앉아 있음 → 안 앉은 사람을 그 묶음 빈자리로
+          var sitter = aIn ? A : B, mover = aIn ? B : A;
+          var c = unitSeats(sitter).filter(function (st) { return T.eligible(mover, st); });
+          if (c.length) T.place(mover, pick(c, rng), 'friend'); else entry.result = '성공했지만 빈자리 없음';
+          return;
+        }
+        // 둘 다 안 앉음 → 둘이 함께 앉을 수 있는 묶음을 무작위로
+        var units = shuffle(L.units.filter(function (u) { return u.activeSeats.length >= 2; }), rng);
+        for (var ui = 0; ui < units.length; ui++) {
+          var sa = shuffle(units[ui].activeSeats.filter(function (st) { return T.eligible(A, st); }), rng);
+          for (var si = 0; si < sa.length; si++) {
+            var trial = T.clone();
+            trial.place(A, sa[si], 'friend');
+            var sb = units[ui].activeSeats.filter(function (st) { return trial.eligible(B, st); });
+            if (sb.length) { T.place(A, sa[si], 'friend'); T.place(B, pick(sb, rng), 'friend'); return; }
+          }
+        }
+        entry.result = '성공했지만 함께 앉을 묶음 없음';
+      });
+      // (b) 남은 학생 무작위 배치
+      var queue = shuffle(ctx.students.filter(function (s) { return !T.stuSeat[s.no]; }).map(function (s) { return s.no; }), rng);
+      for (var qi = 0; qi < queue.length; qi++) {
+        var no = queue[qi];
+        var all = T.emptySeats().filter(function (st) { return T.eligible(no, st); });
+        if (!all.length) { ok = false; break; }
+        T.place(no, pick(all, rng), 'random');
+      }
+      if (ok) { done = T; log = log.concat(flog); break; }
+    }
+    if (!done) {
+      // 최후 수단: 떨어뜨리기 쌍을 무시하고 채움 (교사에게 경고)
+      done = base.clone();
+      ctx.students.forEach(function (s) {
+        if (done.stuSeat[s.no]) return;
+        var all = done.emptySeats().filter(function (st) { return done.eligible(s.no, st, true); });
+        if (!all.length) all = done.emptySeats();
+        done.place(s.no, pick(all, rng), 'random');
+      });
+      ctx.warnings.push('떨어뜨리기 조건을 모두 지킬 수 없어 일부는 무시하고 배치했습니다. 수기 변경으로 조정하세요.');
+    }
+
+    return buildResult(ctx, done, pattern, seed, log);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 결과 · 정산 (전액 차감)
+  // ---------------------------------------------------------------------------
+  function chargeOf(ctx, no) {
+    if (ctx.fixed[no]) return 0;
+    var a = ctx.apps[no], c = 0;
+    if (a.c1) c += a.c1.amount;
+    if (a.c2) c += a.c2.amount;
+    if (a.friend) c += a.friend.amount;
+    return c;
+  }
+
+  function buildResult(ctx, S, pattern, seed, log) {
+    var L = ctx.L;
+    var seats = [];
+    L.units.forEach(function (u) {
+      u.seats.forEach(function (sid) {
+        seats.push({ seat: sid, unit: u.id, active: L.seats[sid].active, no: S.seatOcc[sid] || null });
+      });
+    });
+    var students = ctx.students.map(function (s) {
+      var charge = chargeOf(ctx, s.no), a = ctx.apps[s.no];
+      return {
+        no: s.no, name: s.name, gender: s.gender, money: s.money,
+        seat: S.stuSeat[s.no] || null, unit: S.stuSeat[s.no] ? L.seats[S.stuSeat[s.no]].unit : null,
+        via: S.via[s.no] || null,              // 교사 화면 전용 (학생에게 보여주지 않음)
+        c1: a.c1, c2: a.c2, friend: a.friend, invalid: a.invalid,
+        charge: charge, remain: s.money - charge
+      };
+    });
+    var totalCharge = students.reduce(function (t, s) { return t + s.charge; }, 0);
+    return {
+      ok: true, seed: seed, createdAt: new Date().toISOString(),
+      config: { genderMode: ctx.cfg.genderMode, pairRule: ctx.cfg.pairRule, groupRule: ctx.cfg.groupRule,
+                randomTickets: ctx.cfg.randomTickets, maxBid: ctx.cfg.maxBid },
+      pattern: pattern, seats: seats, students: students,
+      totalCharge: totalCharge, warnings: ctx.warnings, log: log, manualEdits: []
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // 교사 수기 변경 (관리자 창 전용, 학생 미고지) — 두 자리 맞바꾸기/빈자리로 이동
+  // ---------------------------------------------------------------------------
+  function swapSeats(result, seatA, seatB, layout, config, teacher) {
+    var r = JSON.parse(JSON.stringify(result));
+    var sa = r.seats.filter(function (x) { return x.seat === seatA; })[0];
+    var sb = r.seats.filter(function (x) { return x.seat === seatB; })[0];
+    if (!sa || !sb || !sa.active || !sb.active) throw new Error('자리를 확인하세요.');
+    var na = sa.no, nb = sb.no;
+    sa.no = nb; sb.no = na;
+    r.students.forEach(function (s) {
+      if (s.no === na) { s.seat = seatB; s.unit = sb.unit; s.via = 'teacher'; }
+      if (s.no === nb) { s.seat = seatA; s.unit = sa.unit; s.via = 'teacher'; }
+    });
+    r.manualEdits.push({ at: new Date().toISOString(), a: seatA, b: seatB, moved: [na, nb].filter(Boolean) });
+    r.warnings = checkResult(r, layout, config, teacher);
+    return r;
+  }
+
+  // 결과 점검 (규칙 위반 목록) — 수기 변경 후 교사에게 경고용, 테스트에도 사용
+  function checkResult(r, layout, config, teacher) {
+    var issues = [], L = layout, cfg = config || {};
+    var byNo = {};
+    r.students.forEach(function (s) { byNo[s.no] = s; });
+    var occ = {};
+    r.students.forEach(function (s) {
+      if (!s.seat) issues.push(s.no + '번 자리 없음');
+      else if (occ[s.seat]) issues.push(s.seat + ' 중복');
+      else occ[s.seat] = s.no;
+      if (s.seat && !L.seats[s.seat].active) issues.push(s.seat + ' 사용 안 하는 자리');
+    });
+    (teacher && teacher.separate || []).forEach(function (p) {
+      var a = byNo[String(p[0])], b = byNo[String(p[1])];
+      if (a && b && a.unit && a.unit === b.unit) issues.push('떨어뜨리기 위반: ' + a.no + '번-' + b.no + '번 (' + a.unit + '번 묶음)');
+    });
+    Object.keys((teacher && teacher.fixed) || {}).forEach(function (no) {
+      var s = byNo[no];
+      if (s && s.seat !== teacher.fixed[no]) issues.push('고정석 변경됨: ' + no + '번');
+    });
+    if (cfg.genderMode === 'seat') {
+      r.students.forEach(function (s) {
+        var g = (cfg.seatGender || {})[s.seat];
+        if (g && g !== s.gender) issues.push('성별 좌석 위반: ' + s.seat);
+      });
+    }
+    return issues;
+  }
+
+  var api = {
+    DEFAULTS: DEFAULTS, PRESETS: PRESETS, buildLayout: buildLayout, runDraw: runDraw,
+    swapSeats: swapSeats, checkResult: checkResult, makeRng: makeRng,
+    // 학생 화면용: 경쟁자가 없을 때 이 자리 당첨 확률(최대치)
+    soloChance: function (amount, R) { var t = 1 + toInt(amount); R = Math.max(1, toInt(R) || DEFAULTS.randomTickets); return t / (t + R); }
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  root.SeatEngine = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+(function () {
+'use strict';
+var E = window.SeatEngine;
+var BOOT = document.getElementById('boot').dataset;
+var MODE = BOOT.mode === 'admin' ? 'admin' : 'student';
+var root = document.getElementById('root');
+var GRADE = 5;
+var VIA = { fixed: '고정', c1: '1지망', c2: '2지망', friend: '친구', random: '랜덤', teacher: '수기' };
+var STATUS_ORDER = ['register', 'apply', 'closed', 'drawn', 'published'];
+var STATUS_TXT = { register: '등록 중', apply: '신청 중', closed: '신청 마감', drawn: '뽑기 완료(비공개)', published: '결과 공개' };
+
+// ---------------------------------------------------------------------------
+// 공통
+// ---------------------------------------------------------------------------
+// 외부 사이트(GitHub Pages)에서는 SEAT_API_URL로 fetch, 구글 안에서는 google.script.run
+var API_URL = window.SEAT_API_URL || '';
+var APP_URL = API_URL ? (location.origin + location.pathname) : '';
+// 다시 보내도 결과가 같은 요청(읽기 + 학생 등록·제출: 같은 번호는 덮어쓰기)만 자동 재시도
+var RETRY_OK = { apiClasses: 1, apiRoundInfo: 1, apiStatus: 1, apiEnter: 1, adminLogin: 1, adminOverview: 1, adminGetRound: 1, apiRegister: 1, apiSubmit: 1 };
+var BUSY_MSG = '지금 제출하는 친구가 많아요';
+function wait_(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+function fetchApi(fn, args, tries) {
+  return fetch(API_URL, {
+    method: 'POST', credentials: 'omit', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ fn: fn, args: args })
+  }).then(function (res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  }).then(function (r) {
+    // 여러 반이 한꺼번에 몰려 순서를 못 받은 경우 → 잠깐 쉬었다 자동으로 다시
+    if (r && r.ok === false && tries > 0 && RETRY_OK[fn] && String(r.message || '').indexOf(BUSY_MSG) === 0) {
+      return wait_(1500 + Math.random() * 2500).then(function () { return fetchApi(fn, args, tries - 1); });
+    }
+    return r;
+  }, function (e) {
+    if (tries > 0 && RETRY_OK[fn]) return wait_(1000 + Math.random() * 2000).then(function () { return fetchApi(fn, args, tries - 1); });
+    throw new Error('연결이 불안정해요. 잠시 후 다시 눌러 주세요.');
+  });
+}
+function api(fn) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  if (API_URL) {
+    return fetchApi(fn, args, 3).then(function (r) { if (r && r.ok === false) throw new Error(r.message); return r; });
+  }
+  return new Promise(function (resolve, reject) {
+    var runner = google.script.run
+      .withSuccessHandler(function (r) { if (r && r.ok === false) reject(new Error(r.message)); else resolve(r); })
+      .withFailureHandler(function (e) { reject(new Error((e && e.message) || '연결이 불안정해요. 다시 눌러 주세요.')); });
+    runner[fn].apply(runner, args);
+  });
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function int(v, d) { var n = parseInt(v, 10); return isNaN(n) ? (d === undefined ? 0 : d) : n; }
+function hhmm(s) { var m = /(\d{2}):(\d{2}):\d{2}$/.exec(s || ''); return m ? m[1] + ':' + m[2] : ''; }
+function pct(x) { return Math.round(x * 100) + '%'; }
+function ss(k, v) { try { if (v === undefined) return JSON.parse(sessionStorage.getItem(k) || 'null'); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+
+var toastTimer = null;
+function toast(msg, type) {
+  var old = document.querySelector('.toast'); if (old) old.remove();
+  var d = document.createElement('div'); d.className = 'toast ' + (type || 'info'); d.textContent = msg;
+  document.body.appendChild(d);
+  clearTimeout(toastTimer); toastTimer = setTimeout(function () { d.remove(); }, type === 'bad' ? 4500 : 2600);
+}
+function modal(title, bodyHtml, okText, opts) {
+  opts = opts || {};
+  return new Promise(function (resolve) {
+    var bg = document.createElement('div'); bg.className = 'modal-bg';
+    bg.innerHTML = '<div class="modal"><h3>' + esc(title) + '</h3><div>' + bodyHtml + '</div><div class="acts">' +
+      (opts.noCancel ? '' : '<button class="btn" data-m="no">취소</button>') +
+      '<button class="btn ' + (opts.danger ? 'bad' : 'pri') + '" data-m="yes">' + esc(okText || '확인') + '</button></div></div>';
+    document.body.appendChild(bg);
+    bg.onclick = function (e) {
+      var b = e.target.closest('[data-m]');
+      if (!b && e.target !== bg) return;
+      var yes = b && b.dataset.m === 'yes';
+      var input = bg.querySelector('input');
+      bg.remove(); resolve(yes ? (input ? input.value : true) : false);
+    };
+    var inp = bg.querySelector('input'); if (inp) setTimeout(function () { inp.focus(); }, 30);
+  });
+}
+function busy(btn, on) {
+  if (!btn) return;
+  if (on) { btn.dataset.txt = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spin"></span> 잠시만요'; }
+  else { btn.disabled = false; if (btn.dataset.txt) btn.innerHTML = btn.dataset.txt; }
+}
+
+/** 배치도 HTML. opt.seat(sid, unit) → { cls, html, dis } */
+function mapHtml(spec, opt) {
+  var L = E.buildLayout(spec);
+  var pos = (opt && opt.boardPos) || (spec && spec.boardPos) || 'bottom';
+  var board = '<div class="board' + (pos === 'top' ? ' top' : '') + '">칠 판</div>';
+  var h = (pos === 'top' ? board : '') + '<div class="map" style="grid-template-columns:repeat(' + L.perRow + ',minmax(0,1fr))">';
+  L.units.forEach(function (u) {
+    var cols = u.size <= 2 ? u.size : (u.size <= 4 ? 2 : (u.size <= 6 ? 3 : 4));
+    var kind = u.size === 1 ? '혼자 자리' : (u.size === 2 ? '짝' : '모둠');
+    h += '<div class="unit"><div class="ut">' + u.id + '번 ' + kind + '</div><div class="seats" style="grid-template-columns:repeat(' + cols + ',1fr)">';
+    u.seats.forEach(function (sid) {
+      var st = L.seats[sid];
+      var o = (opt && opt.seat) ? (opt.seat(sid, u, st) || {}) : {};
+      var cls = 'seat' + (st.active ? '' : ' off') + (o.cls ? ' ' + o.cls : '');
+      var inner = o.html != null ? o.html : '<div class="sid">' + sid + '</div>' + (st.active ? '' : '<div class="sub">사용 안 함</div>');
+      h += '<div class="' + cls + '" data-seat="' + sid + '">' + inner + '</div>';
+    });
+    h += '</div></div>';
+  });
+  return h + '</div>' + (pos !== 'top' ? board : '');
+}
+
+function numsHtml(sel, taken, onlyTaken) {
+  var h = '<div class="nums">';
+  for (var i = 1; i <= 30; i++) {
+    var t = taken.indexOf(String(i)) >= 0;
+    var dis = onlyTaken && !t;
+    h += '<button class="num' + (t ? ' taken' : '') + (String(sel) === String(i) ? ' sel' : '') + '" data-act="num" data-no="' + i + '"' + (dis ? ' disabled' : '') + '>' +
+      i + (t && !onlyTaken ? '<small>등록됨</small>' : '') + '</button>';
+  }
+  return h + '</div>';
+}
+
+// ===========================================================================
+// 학생 화면
+// ===========================================================================
+var S = { view: 'loading', classes: [], cls: null, info: null, sel: null, form: {}, me: null, app: null, draft: null,
+          target: 'c1', result: null, board: null, poll: null, err: '' };
+
+function sKey() { return 'seat4:' + (S.info ? S.info.round.id : ''); }
+
+function studentStart() {
+  render();
+  api('apiClasses').then(function (r) {
+    S.classes = r.classes;
+    var pre = int(BOOT.cls, 0);
+    if (pre >= 1 && pre <= 12) return openClass(pre);
+    S.view = 'classes'; render();
+  }).catch(function (e) { S.view = 'error'; S.err = e.message; render(); });
+}
+
+function openClass(cls) {
+  S.cls = cls; S.view = 'loading'; render();
+  var c = S.classes.filter(function (x) { return x.cls === cls; })[0];
+  if (!c || !c.roundId) { S.view = 'noround'; render(); return; }
+  api('apiRoundInfo', c.roundId).then(function (r) {
+    S.info = r; route();
+  }).catch(function (e) { toast(e.message, 'bad'); S.view = 'classes'; render(); });
+}
+
+function refreshInfo() {
+  return api('apiRoundInfo', S.info.round.id).then(function (r) { S.info = r; });
+}
+
+function route() {
+  stopPoll();
+  var st = S.info.round.status, mem = ss(sKey());
+  if (st === 'register') {
+    if (mem && S.info.taken.indexOf(String(mem.no)) >= 0) { S.me = mem; S.view = 'registered'; startPoll(); }
+    else { S.view = 'register'; S.sel = mem ? mem.no : null; S.form = mem ? { name: mem.name, gender: mem.gender, money: mem.money } : {}; startPoll(); }
+    render(); return;
+  }
+  if (st === 'closed' || st === 'drawn') { S.view = 'closed'; render(); startPoll(); return; }
+  // apply / published → 번호 + 이름으로 들어가기
+  if (mem) return enter(mem.no, mem.name, true);
+  S.view = 'enter'; S.sel = null; render();
+  if (st === 'apply') startPoll();
+}
+
+function enter(no, name, silent) {
+  S.view = 'loading'; render();
+  return api('apiEnter', S.info.round.id, no, name).then(function (r) {
+    S.me = r.me; ss(sKey(), { no: r.me.no, name: r.me.name, gender: r.me.gender, money: r.me.money });
+    if (r.status !== S.info.round.status) return refreshInfo().then(route);
+    if (r.status === 'published') { S.result = r.result; S.board = r.board; S.view = 'result'; render(); return; }
+    S.app = r.app;
+    S.draft = r.app ? JSON.parse(JSON.stringify({ c1: r.app.c1, c2: r.app.c2, friend: r.app.friend })) : { c1: null, c2: null, friend: null };
+    S.target = 'c1';
+    S.view = r.app ? 'submitted' : 'apply';
+    render(); startPoll();
+  }).catch(function (e) {
+    if (!silent) toast(e.message, 'bad'); else ss(sKey(), null);
+    S.view = 'enter'; S.sel = no; render();
+  });
+}
+
+function startPoll() {
+  stopPoll();
+  // 반 전체가 동시에 확인하지 않도록 5~8초 사이로 흩어서, 화면을 안 보고 있으면 쉼
+  var delay = 5000 + Math.floor(Math.random() * 3000);
+  S.poll = setInterval(function () {
+    if (!S.info || document.hidden) return;
+    api('apiStatus', S.info.round.id).then(function (r) {
+      if (r.status !== S.info.round.status) {
+        var keepTyping = S.view === 'apply' || S.view === 'register';
+        refreshInfo().then(function () {
+          if (keepTyping && S.info.round.status !== 'closed' && S.info.round.status !== 'published' && S.info.round.status !== 'drawn') { route(); return; }
+          toast('단계가 바뀌었어요: ' + STATUS_TXT[S.info.round.status], 'info');
+          route();
+        });
+      }
+    }).catch(function () {});
+  }, delay);
+}
+function stopPoll() { if (S.poll) { clearInterval(S.poll); S.poll = null; } }
+
+function sHeader() {
+  if (!S.info) return '<div class="top"><h1>' + GRADE + '학년 자리바꾸기</h1></div>';
+  var r = S.info.round;
+  var cls = { register: 'warn', apply: '', closed: 'gray', drawn: 'gray', published: 'ok' }[r.status] || '';
+  return '<div class="top"><h1>' + GRADE + '학년 ' + r.cls + '반 · ' + esc(r.month) + ' 자리바꾸기</h1><span class="pill ' + cls + '">' + STATUS_TXT[r.status] + '</span>' +
+    '<span class="sp"></span><button class="btn link" data-act="changeClass">반 바꾸기</button></div>';
+}
+
+function totalOf(d) { return (d.c1 ? d.c1.amount : 0) + (d.c2 ? d.c2.amount : 0) + (d.friend ? d.friend.amount : 0); }
+
+function renderStudent() {
+  var v = S.view, h = '';
+  if (v === 'loading') return '<div class="wrap">' + sHeader() + '<div class="loading"><span class="spin"></span> 불러오는 중…</div></div>';
+  if (v === 'error') return '<div class="wrap"><div class="notice bad">' + esc(S.err) + '</div><button class="btn" data-act="reload">다시 시도</button></div>';
+  if (v === 'classes') {
+    h = '<div class="top"><h1>' + GRADE + '학년 자리바꾸기</h1></div><div class="card"><h2>우리 반을 눌러요</h2><div class="classes">';
+    S.classes.forEach(function (c) {
+      h += '<button class="cls' + (c.roundId ? ' on' : '') + '" data-act="class" data-cls="' + c.cls + '"' + (c.roundId ? '' : ' disabled') + '><b>' + c.cls + '반</b><span>' +
+        (c.roundId ? esc(c.month) + ' · ' + STATUS_TXT[c.status] : '준비 전') + '</span></button>';
+    });
+    return '<div class="wrap">' + h + '</div></div></div>';
+  }
+  if (v === 'noround') return '<div class="wrap"><div class="top"><h1>' + GRADE + '학년 ' + S.cls + '반</h1><span class="sp"></span><button class="btn link" data-act="changeClass">반 바꾸기</button></div><div class="card center"><div class="done">🕒</div><h2>아직 자리바꾸기가 준비되지 않았어요</h2><p class="muted">선생님이 준비하면 다시 들어와 주세요.</p></div></div>';
+
+  h = '<div class="wrap">' + sHeader();
+  var R = S.info.round;
+
+  if (v === 'register') {
+    var takenMine = S.sel && S.info.taken.indexOf(String(S.sel)) >= 0;
+    h += '<div class="card"><h2>① 내 번호를 눌러요</h2>' + numsHtml(S.sel, S.info.taken, false) +
+      (takenMine ? '<div class="notice warn" style="margin-top:10px">이미 등록된 번호예요. 내 번호가 맞으면 이름을 똑같이 쓰고 다시 등록하면 고쳐져요.</div>' : '') + '</div>';
+    h += '<div class="card"><h2>② 내 정보를 써요</h2>' +
+      '<label class="f">이름</label><input type="text" id="fName" maxlength="10" placeholder="예: 김가원" value="' + esc(S.form.name || '') + '" style="max-width:260px;font-size:18px">' +
+      '<label class="f">성별</label><div class="seg"><button data-act="gender" data-g="M" class="' + (S.form.gender === 'M' ? 'on' : '') + '">남</button><button data-act="gender" data-g="F" class="' + (S.form.gender === 'F' ? 'on' : '') + '">여</button></div>' +
+      '<label class="f">내가 가진 가원 (책상 위에 꺼내 놓은 가원을 모두 세어요)</label>' +
+      '<div class="money-in"><input type="number" id="fMoney" min="0" max="9999" inputmode="numeric" value="' + (S.form.money != null ? S.form.money : '') + '" placeholder="0"><b>가원</b></div>' +
+      '<div class="chips"><button class="chip" data-act="madd" data-v="1">+1</button><button class="chip" data-act="madd" data-v="5">+5</button><button class="chip" data-act="madd" data-v="10">+10</button><button class="chip" data-act="madd" data-v="50">+50</button><button class="chip" data-act="madd" data-v="0">0으로</button></div>' +
+      '<div style="margin-top:18px"><button class="btn pri big" data-act="register">등록하기</button></div></div>';
+    return h + '</div>';
+  }
+  if (v === 'registered') {
+    var m = S.me;
+    h += '<div class="card center"><div class="done">✅</div><h2>등록 완료!</h2><p style="font-size:18px"><b>' + esc(m.no) + '번 ' + esc(m.name) + '</b> · ' + (m.gender === 'F' ? '여' : '남') + ' · 가진 가원 <b>' + esc(m.money) + '</b>가원</p>' +
+      '<p class="muted">선생님이 확인하면 자리 신청이 시작돼요. 이 화면을 켜 두면 자동으로 넘어가요. <span class="spin"></span></p>' +
+      '<button class="btn" data-act="editReg">내 정보 고치기</button></div>';
+    return h + '</div>';
+  }
+  if (v === 'enter') {
+    var pub = R.status === 'published';
+    h += '<div class="card"><h2>' + (pub ? '결과를 보려면' : '자리 신청을 하려면') + ' 내 번호를 눌러요</h2>' + numsHtml(S.sel, S.info.taken, true) +
+      '<label class="f">이름</label><div class="row"><input type="text" id="eName" maxlength="10" placeholder="등록할 때 쓴 이름" style="max-width:260px;font-size:18px">' +
+      '<button class="btn pri big" data-act="enter">들어가기</button></div></div>';
+    return h + '</div>';
+  }
+  if (v === 'closed') {
+    h += '<div class="card center"><div class="done">⏳</div><h2>신청이 마감됐어요</h2><p class="muted">선생님이 자리를 뽑고 있어요. 발표를 기다려 주세요. <span class="spin"></span></p></div>';
+    return h + '</div>';
+  }
+  if (v === 'submitted') {
+    var a = S.app || {};
+    var line = function (label, x, isF) {
+      if (!x) return '<tr><td>' + label + '</td><td class="muted">안 함</td><td></td></tr>';
+      return '<tr><td>' + label + '</td><td><b>' + (isF ? esc(x.no) + '번 ' + esc(friendName(x.no)) : esc(x.seat)) + '</b></td><td>' + x.amount + '가원</td></tr>';
+    };
+    h += '<div class="card center"><div class="done">📨</div><h2>제출 완료!</h2>' +
+      '<table style="max-width:420px;margin:10px auto"><tr><th>항목</th><th>고른 것</th><th>넣은 가원</th></tr>' + line('1지망 자리', a.c1) + line('2지망 자리', a.c2) + line('친구', a.friend, true) +
+      '<tr><td colspan="2"><b>모두</b></td><td><b>' + totalOf(a) + '가원</b></td></tr></table>' +
+      '<p class="muted">넣은 가원은 결과와 상관없이 모두 내요. 신청이 마감되기 전까지는 고칠 수 있어요.</p>' +
+      '<button class="btn" data-act="editApp">신청 고치기</button></div>';
+    return h + '</div>';
+  }
+  if (v === 'apply') return h + applyHtml() + '</div>' + barHtml();
+  if (v === 'result') {
+    var res = S.result;
+    h += '<div class="card center">';
+    if (res && res.seat) {
+      h += '<p class="muted" style="margin:0">' + esc(S.me.no) + '번 ' + esc(S.me.name) + '의 자리는</p><div class="big-seat">' + esc(res.seat) + '</div>' +
+        '<p style="font-size:17px">' + (res.charge > 0 ? '낼 가원: <b>' + res.charge + '가원</b> — 책상 위 가원에서 ' + res.charge + '가원을 내 주세요.' : '낼 가원이 없어요.') + '</p>';
+    } else h += '<p>결과를 찾지 못했어요. 선생님께 물어봐 주세요.</p>';
+    h += '</div>';
+    if (S.board) {
+      var names = {}; S.board.forEach(function (x) { names[x.seat] = x; });
+      h += '<div class="card"><h2>우리 반 자리</h2>' + mapHtml(R.layout, { seat: function (sid, u, st) {
+        var x = names[sid] || {};
+        if (!st.active) return null;
+        return { cls: (res && res.seat === sid ? 'me' : ''), html: '<div class="sid">' + sid + '</div><div class="nm">' + (x.name ? esc(x.name) : '<span class="muted">빈자리</span>') + '</div>' };
+      } }) + '</div>';
+    }
+    return h + '</div>';
+  }
+  return h + '</div>';
+}
+
+function friendName(no) {
+  var c = (S.info.classmates || []).filter(function (x) { return x.no === String(no); })[0];
+  return c ? c.name : '';
+}
+function seatDisabled(sid) {
+  var r = S.info.round, L = E.buildLayout(r.layout);
+  if (!L.seats[sid] || !L.seats[sid].active) return true;
+  if ((r.reserved || []).indexOf(sid) >= 0) return true;
+  if (r.config.genderMode === 'seat') { var g = r.config.seatGender[sid]; if (g && g !== S.me.gender) return true; }
+  return false;
+}
+
+function applyHtml() {
+  var r = S.info.round, d = S.draft, R = r.config.randomTickets, max = r.config.maxBid;
+  var h = '<div class="notice info"><b>' + esc(S.me.no) + '번 ' + esc(S.me.name) + '</b> · 가진 가원 <b>' + esc(S.me.money) + '</b>가원<br>' +
+    '🎲 가원은 <b>확률권</b>이에요. 많이 넣을수록 가능성이 올라가지만 <b>100%는 없어요.</b><br>' +
+    '🧾 <b>넣은 가원은 결과와 상관없이 모두 내요.</b> (1지망 · 2지망 · 친구 모두) · 아무것도 안 고르면 완전 랜덤이에요.</div>';
+  function seatCard(key, title) {
+    var c = d[key], on = S.target === key, disabled = key === 'c2' && !d.c1;
+    var x = '<div class="pick ' + key + (on ? ' on' : '') + '" data-act="target" data-k="' + key + '"' + (disabled ? ' style="opacity:.5"' : '') + '>' +
+      '<div class="ph"><span>' + title + '</span>' + (c ? '<button class="btn sm link" data-act="clear" data-k="' + key + '">지우기</button>' : '') + '</div>';
+    if (!c) x += '<div class="pv none">' + (disabled ? '1지망을 먼저 골라요' : (on ? '👇 아래 배치도에서 자리를 눌러요' : '눌러서 고르기')) + '</div>';
+    else {
+      x += '<div class="pv">' + esc(c.seat) + '</div>' + stepHtml(key, c.amount, max) +
+        '<div class="hint">혼자 지원하면 약 <b>' + pct(E.soloChance(c.amount, R)) + '</b> · 경쟁자가 있으면 더 낮아져요</div>';
+    }
+    return x + '</div>';
+  }
+  h += '<div class="picks">' + seatCard('c1', '1지망 자리') + seatCard('c2', '2지망 자리');
+  var f = d.friend;
+  var opts = '<option value="">친구 고르기 (선택)</option>' + (S.info.classmates || []).filter(function (c) { return c.no !== S.me.no; })
+    .map(function (c) { return '<option value="' + c.no + '"' + (f && f.no === c.no ? ' selected' : '') + '>' + c.no + '번 ' + esc(c.name) + '</option>'; }).join('');
+  var unitWord = E.buildLayout(r.layout).units.some(function (u) { return u.size >= 3; }) ? '같은 모둠' : '짝';
+  h += '<div class="pick"><div class="ph"><span>친구와 ' + unitWord + ' 희망</span>' + (f ? '<button class="btn sm link" data-act="clear" data-k="friend">지우기</button>' : '') + '</div>' +
+    '<select id="friendSel" style="margin-top:8px">' + opts + '</select>' + (f ? stepHtml('friend', f.amount, max) + '<div class="hint">가원을 넣을수록 가능성이 올라가요 (100% 아님)</div>' : '') + '</div></div>';
+  h += '<div class="card"><h2>배치도 <span class="muted small">— ' + (S.target === 'c2' ? '2지망' : '1지망') + ' 자리를 눌러 고르세요</span></h2>' +
+    mapHtml(r.layout, { seat: function (sid, u, st) {
+      if (!st.active) return null;
+      var cls = seatDisabled(sid) ? 'dis' : '', badge = '';
+      if (d.c1 && d.c1.seat === sid) { cls += ' c1'; badge = '<span class="badge">1지망</span>'; }
+      if (d.c2 && d.c2.seat === sid) { cls += ' c2'; badge = '<span class="badge">2지망</span>'; }
+      if (r.config.genderMode === 'seat' && r.config.seatGender[sid]) cls += ' g' + r.config.seatGender[sid];
+      return { cls: cls, html: badge + '<div class="sid">' + sid + '</div>' + (seatDisabled(sid) ? '<div class="sub">고를 수 없음</div>' : '') };
+    } }) +
+    (r.config.genderMode === 'seat' ? '<div class="legend"><span><i style="background:var(--m);border-color:var(--m-line)"></i>아래 파란 줄 = 남학생 자리</span><span><i style="background:var(--f);border-color:var(--f-line)"></i>아래 분홍 줄 = 여학생 자리</span></div>' : '') +
+    '</div>';
+  return h;
+}
+function stepHtml(key, amount, max) {
+  return '<div class="step"><button data-act="amt" data-k="' + key + '" data-d="-1">−</button><span class="val">' + amount + '</span><span class="muted small">가원</span>' +
+    '<button data-act="amt" data-k="' + key + '" data-d="1">+</button></div>' +
+    '<div class="chips"><button class="chip" data-act="amt" data-k="' + key + '" data-d="5">+5</button><button class="chip" data-act="amt" data-k="' + key + '" data-d="10">+10</button>' +
+    '<button class="chip" data-act="amtset" data-k="' + key + '" data-v="0">0</button><button class="chip" data-act="amtset" data-k="' + key + '" data-v="' + max + '">최대 ' + max + '</button></div>';
+}
+function barHtml() {
+  var t = totalOf(S.draft), left = (S.me.money || 0) - t;
+  return '<div class="bar"><div class="in"><div class="st">가진 가원<b>' + (S.me.money || 0) + '</b></div><div class="st">넣은 가원<b>' + t + '</b></div>' +
+    '<div class="st' + (left < 0 ? ' over' : '') + '">남는 가원<b>' + left + '</b></div><span class="sp"></span>' +
+    (S.app ? '<button class="btn" data-act="cancelEdit">고치기 취소</button>' : '') +
+    '<button class="btn pri big" data-act="submit"' + (left < 0 ? ' disabled' : '') + '>제출하기</button></div></div>';
+}
+
+function studentClick(e) {
+  var t = e.target.closest('[data-act],[data-seat]');
+  if (!t) return;
+  var act = t.dataset.act;
+  if (!act && t.dataset.seat) return pickSeat(t.dataset.seat);
+  if (act === 'reload') return location.reload();
+  if (act === 'class') return openClass(int(t.dataset.cls));
+  if (act === 'changeClass') { stopPoll(); S.info = null; S.view = 'loading'; render(); return api('apiClasses').then(function (r) { S.classes = r.classes; S.view = 'classes'; render(); }); }
+  if (act === 'num') { S.sel = t.dataset.no; saveForm(); render(); var n = document.getElementById(S.view === 'enter' ? 'eName' : 'fName'); if (n) n.focus(); return; }
+  if (act === 'gender') { saveForm(); S.form.gender = t.dataset.g; render(); return; }
+  if (act === 'madd') { saveForm(); var add = int(t.dataset.v); S.form.money = add === 0 ? 0 : int(S.form.money) + add; render(); return; }
+  if (act === 'register') return doRegister(t);
+  if (act === 'editReg') { stopPoll(); S.view = 'register'; S.sel = S.me.no; S.form = { name: S.me.name, gender: S.me.gender, money: S.me.money }; render(); startPoll(); return; }
+  if (act === 'enter') { var nm = (document.getElementById('eName') || {}).value || ''; if (!S.sel) return toast('번호를 눌러 주세요.', 'bad'); if (!nm.trim()) return toast('이름을 써 주세요.', 'bad'); return enter(S.sel, nm); }
+  if (act === 'target') { if (t.dataset.k === 'c2' && !S.draft.c1) return; if (e.target.closest('button')) return; S.target = t.dataset.k; render(); return; }
+  if (act === 'clear') { var k = t.dataset.k; S.draft[k] = null; if (k === 'c1' && S.draft.c2) { S.draft.c1 = S.draft.c2; S.draft.c2 = null; } if (k !== 'friend') S.target = S.draft.c1 ? 'c2' : 'c1'; render(); return; }
+  if (act === 'amt' || act === 'amtset') { changeAmt(t.dataset.k, act === 'amt' ? int(t.dataset.d) : null, act === 'amtset' ? int(t.dataset.v) : null); return; }
+  if (act === 'submit') return doSubmit(t);
+  if (act === 'editApp') { S.view = 'apply'; S.target = 'c1'; render(); return; }
+  if (act === 'cancelEdit') { S.draft = JSON.parse(JSON.stringify({ c1: S.app.c1, c2: S.app.c2, friend: S.app.friend })); S.view = 'submitted'; render(); return; }
+}
+function saveForm() {
+  var n = document.getElementById('fName'), m = document.getElementById('fMoney');
+  if (n) S.form.name = n.value;
+  if (m) S.form.money = m.value === '' ? null : int(m.value);
+}
+function pickSeat(sid) {
+  if (S.view !== 'apply' || seatDisabled(sid)) return;
+  var d = S.draft, k = S.target;
+  if (k === 'c2' && !d.c1) k = 'c1';
+  var other = k === 'c1' ? 'c2' : 'c1';
+  if (d[k] && d[k].seat === sid) { d[k] = null; if (k === 'c1' && d.c2) { d.c1 = d.c2; d.c2 = null; } render(); return; }
+  if (d[other] && d[other].seat === sid) { var tmp = d[other]; d[other] = d[k]; d[k] = tmp; render(); return; }
+  d[k] = { seat: sid, amount: d[k] ? d[k].amount : 0 };
+  if (k === 'c1' && !d.c2) S.target = 'c2';
+  render();
+}
+function changeAmt(k, delta, set) {
+  var d = S.draft, max = S.info.round.config.maxBid;
+  if (!d[k]) return;
+  var others = totalOf(d) - d[k].amount, room = Math.max(0, (S.me.money || 0) - others);
+  var v = set != null ? set : d[k].amount + delta;
+  v = Math.max(0, Math.min(max, v));
+  if (v > room) { v = room; toast('가진 가원보다 많이 넣을 수 없어요.', 'info'); }
+  d[k].amount = v; render();
+}
+function doRegister(btn) {
+  saveForm();
+  var f = S.form;
+  if (!S.sel) return toast('① 번호를 눌러 주세요.', 'bad');
+  if (!f.name || !String(f.name).trim()) return toast('이름을 써 주세요.', 'bad');
+  if (!f.gender) return toast('남/여를 골라 주세요.', 'bad');
+  if (f.money == null || f.money < 0) return toast('가진 가원을 써 주세요.', 'bad');
+  busy(btn, true);
+  api('apiRegister', S.info.round.id, { no: S.sel, name: f.name, gender: f.gender, money: f.money }).then(function (r) {
+    S.me = r.me; ss(sKey(), r.me);
+    if (S.info.taken.indexOf(String(r.me.no)) < 0) S.info.taken.push(String(r.me.no));
+    toast(r.message, 'ok'); S.view = 'registered'; render();
+  }).catch(function (e) { busy(btn, false); toast(e.message, 'bad'); });
+}
+function doSubmit(btn) {
+  var d = S.draft, t = totalOf(d);
+  var fr = document.getElementById('friendSel');
+  var lines = '<table>' +
+    '<tr><td>1지망</td><td><b>' + (d.c1 ? esc(d.c1.seat) + '</b> · ' + d.c1.amount + '가원' : '안 함</b>') + '</td></tr>' +
+    '<tr><td>2지망</td><td><b>' + (d.c2 ? esc(d.c2.seat) + '</b> · ' + d.c2.amount + '가원' : '안 함</b>') + '</td></tr>' +
+    '<tr><td>친구</td><td><b>' + (d.friend ? esc(d.friend.no) + '번 ' + esc(friendName(d.friend.no)) + '</b> · ' + d.friend.amount + '가원' : '안 함</b>') + '</td></tr></table>' +
+    '<div class="notice warn" style="margin:12px 0 0">모두 <b>' + t + '가원</b>을 넣어요. <b>결과와 상관없이 모두 내야 해요.</b></div>';
+  modal('이대로 제출할까요?', lines, '제출하기').then(function (yes) {
+    if (!yes) return;
+    busy(btn, true);
+    api('apiSubmit', S.info.round.id, S.me.no, S.me.name, d).then(function (r) {
+      S.app = r.app; toast(r.message, 'ok'); S.view = 'submitted'; render();
+    }).catch(function (e) { busy(btn, false); toast(e.message, 'bad'); });
+  });
+}
+function studentChange(e) {
+  if (e.target.id === 'friendSel') {
+    var v = e.target.value;
+    S.draft.friend = v ? { no: v, amount: S.draft.friend ? S.draft.friend.amount : 0 } : null;
+    render();
+  }
+}
+function studentKey(e) {
+  if (e.key !== 'Enter') return;
+  if (e.target.id === 'eName') { var b = document.querySelector('[data-act=enter]'); if (b) b.click(); }
+}
+
+// ===========================================================================
+// 교사 화면
+// ===========================================================================
+var A = { view: 'login', pw: null, ov: null, cls: null, rid: null, data: null, tab: null, sel: null, draft: null, poll: null,
+          teacherDraft: null, editRow: null, checked: {}, tv: false, setupMode: 'off' };
+
+function adminStart() {
+  var pw = ss('seat4:pw');
+  if (pw) { A.pw = pw; return loadOverview(); }
+  A.view = 'login'; render();
+}
+function loadOverview() {
+  A.view = 'loading'; render();
+  return api('adminLogin', A.pw).then(function (r) { A.ov = r; ss('seat4:pw', A.pw); A.view = 'home'; render(); })
+    .catch(function (e) { ss('seat4:pw', null); A.pw = null; A.view = 'login'; render(); toast(e.message, 'bad'); });
+}
+function openRound(rid, keepTab) {
+  stopAdminPoll();
+  A.rid = rid; A.sel = null; A.editRow = null; A.draft = null; A.teacherDraft = null;
+  if (!keepTab) A.tab = null;
+  A.view = 'loading'; render();
+  return api('adminGetRound', A.pw, rid).then(function (r) { setData(r); A.view = 'round'; render(); startAdminPoll(); })
+    .catch(function (e) { toast(e.message, 'bad'); A.view = 'home'; render(); });
+}
+function setData(r) {
+  A.data = r;
+  if (!A.tab) A.tab = { register: r.students.length ? 'reg' : 'setup', apply: 'apply', closed: 'draw', drawn: 'draw', published: 'pay' }[r.round.status] || 'reg';
+  if (!A.draft || r.round.status !== 'register') A.draft = { layout: JSON.parse(JSON.stringify(r.round.layout)), config: JSON.parse(JSON.stringify(r.round.config)) };
+  if (!A.teacherDraft) A.teacherDraft = teacherToDraft(r.round.teacher);
+  if (r.message) toast(r.message, 'ok');
+}
+function teacherToDraft(t) {
+  return { fixed: Object.keys(t.fixed || {}).map(function (no) { return { no: no, seat: t.fixed[no] }; }), separate: (t.separate || []).map(function (p) { return { a: p[0], b: p[1] }; }) };
+}
+function startAdminPoll() {
+  stopAdminPoll();
+  A.poll = setInterval(function () {
+    if (document.hidden || A.view !== 'round' || A.editRow || A.tv || document.querySelector('.modal-bg')) return;
+    var st = A.data.round.status;
+    if (!((st === 'register' && A.tab === 'reg') || (st === 'apply' && (A.tab === 'apply' || A.tab === 'reg')))) return;
+    if (document.activeElement && /INPUT|SELECT/.test(document.activeElement.tagName)) return;
+    api('adminGetRound', A.pw, A.rid).then(function (r) { if (A.view === 'round' && !A.editRow) { A.data = r; render(); } }).catch(function () {});
+  }, 5000);
+}
+function stopAdminPoll() { if (A.poll) { clearInterval(A.poll); A.poll = null; } }
+
+function mutate(fn, args, btn, okMsg) {
+  busy(btn, true);
+  return api.apply(null, [fn, A.pw, A.rid].concat(args || [])).then(function (r) {
+    A.data = r;
+    if (r.round.status !== 'register') A.draft = { layout: JSON.parse(JSON.stringify(r.round.layout)), config: JSON.parse(JSON.stringify(r.round.config)) };
+    if (r.message || okMsg) toast(r.message || okMsg, 'ok');
+    render(); return r;
+  }).catch(function (e) { busy(btn, false); toast(e.message, 'bad'); return null; });
+}
+
+function renderAdmin() {
+  var banner = A.view === 'login' ? '' : '<div class="admin-banner noprint">⚠️ 선생님 전용 화면 — 학생에게 보여주지 마세요 (배정 경로 · 수기 변경 내용 포함)</div>';
+  var h = banner + '<div class="wrap">';
+  if (A.view === 'loading') return h + '<div class="loading"><span class="spin"></span> 불러오는 중…</div></div>';
+  if (A.view === 'login') {
+    return h + '<div class="card" style="max-width:420px;margin:60px auto"><h2>🔐 선생님 관리자</h2><p class="muted small">' + GRADE + '학년 공용 자리바꾸기</p>' +
+      '<label class="f">비밀번호</label><input type="password" id="pw" autocomplete="off"><div style="margin-top:14px"><button class="btn pri big" data-act="login" style="width:100%">들어가기</button></div></div></div>';
+  }
+  if (A.view === 'home') {
+    h += '<div class="top"><h1>' + GRADE + '학년 자리바꾸기 · 선생님</h1><span class="sp"></span><button class="btn sm" data-act="refreshHome">새로고침</button><button class="btn sm" data-act="logout">로그아웃</button></div>';
+    h += '<div class="card"><h2>반을 골라요</h2><div class="classes">';
+    A.ov.classes.forEach(function (c) {
+      h += '<button class="cls on" data-act="openCls" data-cls="' + c.cls + '"><b>' + c.cls + '반</b><span>' + (c.current ? esc(c.current.month) + ' · ' + c.current.statusText : '회차 없음') + '</span></button>';
+    });
+    h += '</div></div>';
+    var baseUrl = APP_URL || A.ov.appUrl;
+    if (baseUrl) h += '<div class="card"><h2>주소</h2><p class="small">학생용: <code>' + esc(baseUrl) + '</code> (반 바로가기: <code>?ban=반번호</code>)<br>선생님용: <code>' + esc(baseUrl) + '?admin=1</code></p></div>';
+    return h + '</div>';
+  }
+  if (A.view === 'class') {
+    var c = A.ov.classes.filter(function (x) { return x.cls === A.cls; })[0];
+    var m = (new Date().getMonth() + 1) + '월';
+    h += '<div class="top"><button class="btn sm" data-act="home">← 반 목록</button><h1>' + GRADE + '학년 ' + A.cls + '반</h1></div>';
+    h += '<div class="card"><h2>새 자리바꾸기 만들기</h2><div class="row"><div style="width:160px"><label class="f">몇 월</label><input type="text" id="newMonth" value="' + m + '"></div></div>' +
+      (c.rounds.length ? '<label class="row small" style="margin-top:12px"><input type="checkbox" id="copyRoster" checked> 지난 회차 명단 불러오기 (번호 · 이름 · 성별 — 가원은 학생이 새로 입력)</label>' +
+        '<label class="row small" style="margin-top:6px"><input type="checkbox" id="copySep" checked> 떨어뜨릴 학생 쌍 이어받기</label>' +
+        '<p class="small muted">배치 틀과 성별 규칙은 지난 회차 것을 그대로 가져와요.</p>' : '<p class="small muted">처음 만드는 회차예요. 만든 뒤 [배치 설정]에서 교실 모양을 정해요.</p>') +
+      '<div style="margin-top:12px"><button class="btn pri" data-act="createRound">만들기 (학생 등록이 바로 열려요)</button></div></div>';
+    h += '<div class="card"><h2>회차 목록</h2>' + (c.rounds.length ? '<table><tr><th>월</th><th>단계</th><th>만든 시각</th><th></th></tr>' + c.rounds.map(function (r, i) {
+      return '<tr><td><b>' + esc(r.month) + '</b>' + (i === 0 ? ' <span class="pill">현재</span>' : '') + '</td><td>' + r.statusText + '</td><td class="small muted">' + esc(r.createdAt) + '</td><td><button class="btn sm" data-act="openRound" data-rid="' + r.id + '">열기</button></td></tr>';
+    }).join('') + '</table>' : '<p class="muted">아직 없어요.</p>') + '</div>';
+    return h + '</div>';
+  }
+  if (A.view === 'round') return h + roundHtml() + '</div>' + (A.tv ? tvHtml() : '');
+  return h + '</div>';
+}
+
+function roundHtml() {
+  var d = A.data, r = d.round, st = r.status;
+  var idx = STATUS_ORDER.indexOf(st);
+  var h = '<div class="top"><button class="btn sm" data-act="backCls">← ' + r.cls + '반</button><h1><span class="badge-cls">' + GRADE + '학년 ' + r.cls + '반</span> ' + esc(r.month) + ' 자리바꾸기</h1><span class="sp"></span><button class="btn sm" data-act="reloadRound">새로고침</button></div>';
+  h += '<div class="steps">' + ['① 학생 등록', '② 자리 신청', '③ 신청 마감', '④ 뽑기(비공개)', '⑤ 결과 공개'].map(function (t, i) {
+    return '<span class="' + (i < idx ? 'done' : (i === idx ? 'now' : '')) + '">' + (i < idx ? '✓ ' : '') + t + '</span>';
+  }).join('') + '</div>';
+  var tabs = [['setup', '배치 설정'], ['reg', '학생 등록'], ['apply', '자리 신청 · 교사 설정'], ['draw', '자리 뽑기'], ['pay', '공개 · 징수표']];
+  h += '<div class="tabs noprint">' + tabs.map(function (t) { return '<button class="' + (A.tab === t[0] ? 'on' : '') + '" data-act="tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
+  if (A.tab === 'setup') h += setupHtml();
+  if (A.tab === 'reg') h += regHtml();
+  if (A.tab === 'apply') h += applyAdminHtml();
+  if (A.tab === 'draw') h += drawHtml();
+  if (A.tab === 'pay') h += payHtml();
+  h += '<div class="card noprint" style="border-color:#f3c4c4"><h3 style="margin-top:0;color:var(--bad)">위험 구역</h3><p class="small muted">연습용 회차 등을 지울 때만 쓰세요. 학생 등록 · 신청 · 결과가 모두 지워져요.</p><button class="btn bad sm" data-act="deleteRound">이 회차 삭제</button></div>';
+  return h;
+}
+
+// --- 배치 설정 ---
+function presetKeyOf(units) {
+  var s = JSON.stringify(units), k = null;
+  Object.keys(E.PRESETS).forEach(function (p) { if (JSON.stringify(E.PRESETS[p].units) === s) k = p; });
+  return k;
+}
+function setupHtml() {
+  var st = A.data.round.status, editable = st === 'register', dr = A.draft, lay = dr.layout, cfg = dr.config;
+  var L = E.buildLayout(lay);
+  var hasPair = L.units.some(function (u) { return u.type === 'pair'; }), hasGroup = L.units.some(function (u) { return u.type === 'group'; });
+  var pk = presetKeyOf(lay.units);
+  var h = '';
+  if (!editable) h += '<div class="notice warn">신청이 시작돼서 배치를 바꿀 수 없어요. 바꾸려면 [학생 등록] 탭에서 등록 단계로 돌아가세요.</div>';
+  h += '<div class="grid2"><div class="card"><h2>교실 모양</h2>' +
+    '<label class="f">기본 틀</label><select id="presetSel"' + (editable ? '' : ' disabled') + '>' +
+    Object.keys(E.PRESETS).map(function (p) { return '<option value="' + p + '"' + (p === pk ? ' selected' : '') + '>' + E.PRESETS[p].name + '</option>'; }).join('') +
+    '<option value=""' + (pk ? '' : ' selected') + '>직접 구성</option></select>' +
+    '<label class="f">책상 묶음 (−/+ 로 자리 수, ✕ 로 삭제)</label><div class="units-ed">' +
+    lay.units.map(function (n, i) {
+      return '<span class="u"><b>' + (i + 1) + '번</b>' + (editable ? '<button data-act="uSize" data-i="' + i + '" data-d="-1">−</button>' : '') + n + '석' +
+        (editable ? '<button data-act="uSize" data-i="' + i + '" data-d="1">+</button><button data-act="uDel" data-i="' + i + '">✕</button>' : '') + '</span>';
+    }).join('') + '</div>' +
+    (editable ? '<div class="row" style="margin-top:8px"><button class="btn sm" data-act="uAdd" data-n="2">+ 짝(2석)</button><button class="btn sm" data-act="uAdd" data-n="4">+ 모둠(4석)</button><button class="btn sm" data-act="uAdd" data-n="1">+ 혼자 자리</button></div>' : '') +
+    '<label class="f">한 줄에 놓을 묶음 수</label><select id="perRow"' + (editable ? '' : ' disabled') + '>' + [2, 3, 4, 5, 6].map(function (n) { return '<option' + (lay.perRow === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select>' +
+    '<label class="f">칠판 위치</label><select id="boardPos"' + (editable ? '' : ' disabled') + '>' +
+    [['bottom', '아래쪽 (4·5·6모둠 밑 — 기본)'], ['top', '위쪽 (1·2·3모둠 위)']].map(function (o) { return '<option value="' + o[0] + '"' + ((lay.boardPos || 'bottom') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+    '</div><div class="card"><h2>성별 규칙 · 운 요소</h2>' +
+    '<label class="row small"><input type="checkbox" id="seatMode"' + (cfg.genderMode === 'seat' ? ' checked' : '') + (editable ? '' : ' disabled') + '> 좌석마다 남/여를 직접 지정 (지정하면 아래 규칙 대신 적용)</label>' +
+    '<label class="f">짝 규칙 (2인 책상)' + (hasPair ? '' : ' — 짝 없음') + '</label><select id="pairRule"' + (editable && cfg.genderMode !== 'seat' ? '' : ' disabled') + '>' +
+    [['mixed', '이성 짝'], ['same', '동성 짝'], ['free', '자유']].map(function (o) { return '<option value="' + o[0] + '"' + (cfg.pairRule === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+    '<label class="f">모둠 규칙 (3인 이상)' + (hasGroup ? '' : ' — 모둠 없음') + '</label><select id="groupRule"' + (editable && cfg.genderMode !== 'seat' ? '' : ' disabled') + '>' +
+    [['balance', '모둠 성비 밸런스'], ['free', '자유']].map(function (o) { return '<option value="' + o[0] + '"' + (cfg.groupRule === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+    '<div class="grid2" style="gap:10px"><div><label class="f">운 요소 (랜덤표)</label><select id="rt"' + (editable ? '' : ' disabled') + '>' +
+    [[5, '5장 — 가원 효과 큼'], [10, '10장 — 보통'], [20, '20장 — 운 요소 큼']].map(function (o) { return '<option value="' + o[0] + '"' + (cfg.randomTickets === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>' +
+    '<div><label class="f">항목당 최대 가원</label><input type="number" id="maxBid" min="0" max="100" value="' + cfg.maxBid + '"' + (editable ? '' : ' disabled') + '></div></div>' +
+    '<p class="small muted">혼자 지원할 때 확률: 0가원 ' + pct(E.soloChance(0, cfg.randomTickets)) + ' · 5가원 ' + pct(E.soloChance(5, cfg.randomTickets)) + ' · 10가원 ' + pct(E.soloChance(10, cfg.randomTickets)) + ' · ' + cfg.maxBid + '가원 ' + pct(E.soloChance(cfg.maxBid, cfg.randomTickets)) + '</p></div></div>';
+  var chk = A.data.checks;
+  h += '<div class="card"><h2>배치도 미리보기 <span class="muted small">— 사용 ' + L.activeCount + '석 · 등록 ' + chk.count + '명 (남 ' + chk.male + ' · 여 ' + chk.female + ')</span></h2>';
+  if (editable) h += '<div class="row small" style="margin-bottom:10px"><b>좌석을 누르면:</b> <label><input type="radio" name="sm" value="off"' + (A.setupMode === 'off' ? ' checked' : '') + '> 사용 끄기/켜기</label>' +
+    (cfg.genderMode === 'seat' ? '<label><input type="radio" name="sm" value="gender"' + (A.setupMode === 'gender' ? ' checked' : '') + '> 남 → 여 → 공용 바꾸기</label>' : '') + '</div>';
+  h += mapHtml(lay, { seat: function (sid, u, st2) {
+    var g = cfg.genderMode === 'seat' ? cfg.seatGender[sid] : null;
+    return { cls: (g ? ' ' + g : ''), html: '<div class="sid">' + sid + '</div><div class="sub">' + (!st2.active ? '사용 안 함' : (g === 'M' ? '남' : g === 'F' ? '여' : (cfg.genderMode === 'seat' ? '공용' : ''))) + '</div>' };
+  } });
+  if (cfg.genderMode === 'seat') {
+    var cM = 0, cF = 0, cA = 0; Object.keys(L.seats).forEach(function (s) { if (!L.seats[s].active) return; var g = cfg.seatGender[s]; if (g === 'M') cM++; else if (g === 'F') cF++; else cA++; });
+    h += '<p class="small">남자석 ' + cM + ' · 여자석 ' + cF + ' · 공용 ' + cA + (chk.count ? ' — 등록 남 ' + chk.male + ' · 여 ' + chk.female : '') + '</p>';
+  }
+  if (L.activeCount < chk.count) h += '<div class="notice bad">자리가 학생보다 적어요. 묶음을 더하거나 자리를 켜 주세요.</div>';
+  if (editable) h += '<div style="margin-top:12px"><button class="btn pri" data-act="saveSetup">배치 · 규칙 저장</button> <span class="small muted">저장해야 학생 화면에 반영돼요.</span></div>';
+  return h + '</div>';
+}
+
+// --- 학생 등록 ---
+function regHtml() {
+  var d = A.data, r = d.round, st = r.status, chk = d.checks;
+  var baseUrl = APP_URL || (A.ov && A.ov.appUrl) || '';
+  var link = baseUrl ? baseUrl + '?ban=' + r.cls : '';
+  var h = '';
+  if (link) h += '<div class="card"><h2>학생 접속 주소 (' + r.cls + '반 바로가기)</h2><div class="row"><input type="text" id="linkBox" readonly value="' + esc(link) + '" style="flex:1;min-width:240px"><button class="btn" data-act="copyLink">복사</button></div><p class="small muted">학생은 이 주소로 들어와서 번호 → 이름 → 성별 → 가진 가원을 입력해요.</p></div>';
+  h += '<div class="card"><h2>등록 현황 <span class="muted small">' + (st === 'register' || st === 'apply' ? '· 5초마다 자동 새로고침' : '') + '</span></h2>' +
+    '<div class="kv"><div>등록<b>' + chk.count + '명</b></div><div>남 / 여<b>' + chk.male + ' / ' + chk.female + '</b></div><div>사용 좌석<b>' + chk.seats + '석</b></div><div>가원 합계<b>' + d.students.reduce(function (t, s) { return t + (s.money || 0); }, 0) + '</b></div></div>' +
+    (chk.issues.length ? '<div class="notice bad" style="margin-top:12px">' + chk.issues.map(esc).join('<br>') + '</div>' : '') + '</div>';
+  var editable = st === 'register' || st === 'apply' || st === 'closed';
+  var dup = {}; d.students.forEach(function (s) { dup[s.no] = (dup[s.no] || 0) + 1; });
+  h += '<div class="card"><h2>등록 명단 <span class="muted small">— 책상 위 가원과 대조하면서 ✓ (내 화면에만 표시)</span></h2><div class="scroll"><table><tr><th>✓</th><th>번호</th><th>이름</th><th>성별</th><th>가진 가원</th><th>등록</th><th></th></tr>';
+  d.students.forEach(function (s) {
+    if (A.editRow === s.no) {
+      h += '<tr><td></td><td><input type="number" id="erNo" value="' + s.no + '" style="width:70px"></td><td><input type="text" id="erName" value="' + esc(s.name) + '" style="width:120px"></td>' +
+        '<td><select id="erG"><option value="M"' + (s.gender === 'M' ? ' selected' : '') + '>남</option><option value="F"' + (s.gender === 'F' ? ' selected' : '') + '>여</option></select></td>' +
+        '<td><input type="number" id="erMoney" value="' + (s.money == null ? '' : s.money) + '" style="width:90px"></td><td></td>' +
+        '<td><button class="btn sm pri" data-act="rowSave" data-no="' + s.no + '">저장</button> <button class="btn sm" data-act="rowCancel">취소</button></td></tr>';
+    } else {
+      h += '<tr class="' + (dup[s.no] > 1 ? 'dup' : '') + '"><td><input type="checkbox" data-act="chk" data-no="' + s.no + '"' + (A.checked[s.no] ? ' checked' : '') + '></td><td><b>' + s.no + '</b></td><td>' + esc(s.name) + '</td><td>' + (s.gender === 'F' ? '여' : '남') + '</td>' +
+        '<td>' + (s.money == null ? '<span class="pill bad">미입력</span>' : '<b>' + s.money + '</b>') + '</td><td class="small muted">' + hhmm(s.at) + ' ' + esc(s.by) + '</td>' +
+        '<td>' + (editable ? '<button class="btn sm" data-act="rowEdit" data-no="' + s.no + '">수정</button> <button class="btn sm bad" data-act="rowDel" data-no="' + s.no + '">삭제</button>' : '') + '</td></tr>';
+    }
+  });
+  if (editable && A.editRow === '__new') {
+    h += '<tr><td></td><td><input type="number" id="erNo" style="width:70px"></td><td><input type="text" id="erName" style="width:120px"></td><td><select id="erG"><option value="M">남</option><option value="F">여</option></select></td>' +
+      '<td><input type="number" id="erMoney" style="width:90px"></td><td></td><td><button class="btn sm pri" data-act="rowSave" data-no="">추가</button> <button class="btn sm" data-act="rowCancel">취소</button></td></tr>';
+  }
+  if (!d.students.length && A.editRow !== '__new') h += '<tr><td colspan="7" class="muted center">아직 등록한 학생이 없어요. 학생들이 주소로 들어와 등록하면 여기에 나타나요.</td></tr>';
+  h += '</table></div>' + (editable && !A.editRow ? '<div style="margin-top:10px"><button class="btn sm" data-act="rowNew">+ 학생 직접 추가</button></div>' : '') + '</div>';
+  if (st === 'register') h += '<div class="card"><h2>등록 확인이 끝나면</h2><p class="small muted">학생들이 책상 위에 가원을 모두 꺼내 놓았는지, 입력한 가원과 맞는지 확인한 뒤 눌러요. 누르면 학생 화면이 자리 신청으로 넘어가요.</p><button class="btn ok big" data-act="toApply">✅ 확인 · 자리 신청 시작</button></div>';
+  if (st === 'apply') h += '<div class="card"><p class="small muted" style="margin-top:0">등록을 다시 받아야 하면 되돌릴 수 있어요. (이미 낸 신청서는 남아 있어요)</p><button class="btn" data-act="toRegister">↩ 등록 단계로 돌아가기</button></div>';
+  return h;
+}
+
+// --- 자리 신청 · 교사 설정 ---
+function applyAdminHtml() {
+  var d = A.data, r = d.round, st = r.status;
+  var h = '';
+  if (st === 'register') h += '<div class="notice warn">아직 등록 단계예요. [학생 등록] 탭에서 [확인 · 자리 신청 시작]을 누르면 신청이 열려요. 교사 설정은 지금 넣어 둬도 돼요.</div>';
+  var subm = d.students.filter(function (s) { return d.apps[s.no]; }).length;
+  h += '<div class="card"><h2>제출 현황 <b>' + subm + ' / ' + d.students.length + '</b> <span class="muted small">· 5초마다 자동 새로고침 · 제출 안 한 학생은 완전 랜덤</span></h2><div class="subm">' +
+    d.students.map(function (s) { return '<span class="' + (d.apps[s.no] ? 'y' : '') + '">' + (d.apps[s.no] ? '✓ ' : '') + s.no + ' ' + esc(s.name) + '</span>'; }).join('') + '</div>';
+  var rows = d.students.filter(function (s) { return d.apps[s.no]; });
+  if (rows.length) {
+    var name = {}; d.students.forEach(function (s) { name[s.no] = s.name; });
+    h += '<h3>신청 내용</h3><div class="scroll"><table><tr><th>번호</th><th>이름</th><th>가진</th><th>1지망</th><th>2지망</th><th>친구</th><th>넣은 가원</th><th>제출</th></tr>' + rows.map(function (s) {
+      var a = d.apps[s.no];
+      return '<tr><td>' + s.no + '</td><td>' + esc(s.name) + '</td><td>' + (s.money == null ? '-' : s.money) + '</td><td>' + (a.c1 ? '<b>' + a.c1.seat + '</b> · ' + a.c1.amount : '-') + '</td><td>' + (a.c2 ? '<b>' + a.c2.seat + '</b> · ' + a.c2.amount : '-') +
+        '</td><td>' + (a.friend ? a.friend.no + '번 ' + esc(name[a.friend.no] || '') + ' · ' + a.friend.amount : '-') + '</td><td><b>' + a.total + '</b></td><td class="small muted">' + hhmm(a.at) + '</td></tr>';
+    }).join('') + '</table></div>';
+  }
+  h += '</div>';
+  // 교사 전용
+  var td = A.teacherDraft, editable = st === 'register' || st === 'apply' || st === 'closed';
+  var L = E.buildLayout(r.layout);
+  var seatsOpt = function (sel) { return '<option value="">자리</option>' + Object.keys(L.seats).filter(function (s) { return L.seats[s].active; }).map(function (s) { return '<option' + (s === sel ? ' selected' : '') + '>' + s + '</option>'; }).join(''); };
+  var stuOpt = function (sel) { return '<option value="">학생</option>' + d.students.map(function (s) { return '<option value="' + s.no + '"' + (String(sel) === s.no ? ' selected' : '') + '>' + s.no + '번 ' + esc(s.name) + '</option>'; }).join(''); };
+  h += '<div class="card teacher-only"><h2>🔒 교사 설정 <span class="muted small">— 학생 화면에는 보이지 않아요</span></h2>';
+  h += '<h3>고정석 (이 학생은 이 자리에)</h3>' + (td.fixed.length ? '' : '<p class="small muted">없음</p>');
+  td.fixed.forEach(function (f, i) {
+    h += '<div class="row" style="margin-bottom:6px"><select data-tf="fixed" data-i="' + i + '" data-f="no" style="width:180px"' + (editable ? '' : ' disabled') + '>' + stuOpt(f.no) + '</select> → <select data-tf="fixed" data-i="' + i + '" data-f="seat" style="width:110px"' + (editable ? '' : ' disabled') + '>' + seatsOpt(f.seat) + '</select>' +
+      (editable ? '<button class="btn sm bad" data-act="tDel" data-k="fixed" data-i="' + i + '">✕</button>' : '') + '</div>';
+  });
+  if (editable) h += '<button class="btn sm" data-act="tAdd" data-k="fixed">+ 고정석 추가</button>';
+  h += '<h3>떨어뜨릴 학생 (같은 짝 · 모둠이 되지 않게)</h3>' + (td.separate.length ? '' : '<p class="small muted">없음</p>');
+  td.separate.forEach(function (p, i) {
+    h += '<div class="row" style="margin-bottom:6px"><select data-tf="separate" data-i="' + i + '" data-f="a" style="width:180px"' + (editable ? '' : ' disabled') + '>' + stuOpt(p.a) + '</select> ↔ <select data-tf="separate" data-i="' + i + '" data-f="b" style="width:180px"' + (editable ? '' : ' disabled') + '>' + stuOpt(p.b) + '</select>' +
+      (editable ? '<button class="btn sm bad" data-act="tDel" data-k="separate" data-i="' + i + '">✕</button>' : '') + '</div>';
+  });
+  if (editable) h += '<button class="btn sm" data-act="tAdd" data-k="separate">+ 쌍 추가</button>';
+  // 고정석을 이미 고른 학생 경고
+  var saved = r.teacher.fixed || {}, hit = [];
+  Object.keys(saved).forEach(function (no) {
+    var seat = saved[no];
+    d.students.forEach(function (s) { var a = d.apps[s.no]; if (a && s.no !== no && ((a.c1 && a.c1.seat === seat) || (a.c2 && a.c2.seat === seat))) hit.push(s.no + '번(' + seat + ')'); });
+  });
+  if (hit.length) h += '<div class="notice warn" style="margin-top:10px">고정석으로 막은 자리를 이미 고른 학생: ' + hit.join(', ') + ' — 그 지망은 무효가 되고 가원도 차감되지 않아요.</div>';
+  if (editable) h += '<div style="margin-top:14px"><button class="btn pri" data-act="saveTeacher">교사 설정 저장</button></div>';
+  h += '</div>';
+  if (st === 'apply') h += '<div class="card"><button class="btn big pri" data-act="toClosed">⏹ 신청 마감</button> <span class="small muted">마감하면 학생은 더 이상 고칠 수 없어요.</span></div>';
+  if (st === 'closed') h += '<div class="card"><button class="btn" data-act="toApply2">▶ 신청 다시 열기</button> <button class="btn pri" data-act="tab" data-tab="draw">자리 뽑기로 →</button></div>';
+  return h;
+}
+
+// --- 자리 뽑기 ---
+function drawHtml() {
+  var d = A.data, r = d.round, st = r.status, res = d.result;
+  var h = '';
+  if (st === 'register' || st === 'apply') return '<div class="card"><p>먼저 신청을 마감해야 자리를 뽑을 수 있어요.</p>' + (st === 'apply' ? '<button class="btn pri" data-act="toClosed">⏹ 신청 마감</button>' : '') + '</div>';
+  if (st === 'closed') return '<div class="card center"><div class="done">🎲</div><h2>자리를 뽑을 준비가 됐어요</h2><p class="muted">뽑은 결과는 [결과 공개]를 누르기 전까지 학생에게 보이지 않아요.</p><button class="btn pri big" data-act="draw">🎲 자리 뽑기</button><p style="margin-top:14px"><button class="btn sm" data-act="toApply2">▶ 신청 다시 열기</button></p></div>';
+  var name = {}; res.students.forEach(function (s) { name[s.no] = s; });
+  var occ = {}; res.seats.forEach(function (x) { occ[x.seat] = x.no; });
+  h += '<div class="card"><div class="row"><h2 style="margin:0">' + (st === 'published' ? '공개된 결과' : '뽑은 결과 (아직 비공개)') + '</h2><span class="sp" style="flex:1"></span>' +
+    '<span class="pill gray">' + (res.drawCount || 1) + '번째 뽑기 · 시드 ' + res.seed + (res.manualEdits && res.manualEdits.length ? ' · 수기 변경 ' + res.manualEdits.length + '회' : '') + '</span></div>';
+  if (st === 'drawn') h += '<p class="small muted">자리 두 개를 차례로 누르면 서로 바뀌어요 (빈자리로 옮기기도 돼요). 바꾼 내용은 학생에게 알리지 않아요.</p>';
+  if (res.warnings && res.warnings.length) h += '<div class="notice warn">' + res.warnings.map(esc).join('<br>') + '</div>';
+  h += mapHtml(r.layout, { seat: function (sid, u, st2) {
+    if (!st2.active) return null;
+    var s = occ[sid] ? name[occ[sid]] : null;
+    return { cls: (s ? s.gender : '') + (A.sel === sid ? ' sel' : ''),
+      html: '<div class="sid">' + sid + '</div>' + (s ? '<div class="nm">' + s.no + ' ' + esc(s.name) + '</div><span class="via">' + (VIA[s.via] || '') + '</span>' : '<div class="sub">빈자리</div>') };
+  } });
+  h += '<div class="legend"><span>작은 표시 = 배정 경로(교사만): 1지망 · 2지망 · 친구 · 랜덤 · 고정 · 수기</span></div></div>';
+  if (st === 'drawn') {
+    h += '<div class="card"><div class="row"><button class="btn ok big" data-act="publish">📢 결과 공개</button><button class="btn" data-act="redraw">🎲 다시 뽑기</button><button class="btn" data-act="openTv">📺 전광판 미리보기</button><button class="btn" data-act="toApply3">↩ 신청 다시 받기 (결과 삭제)</button></div></div>';
+  } else {
+    h += '<div class="card"><div class="row"><button class="btn pri" data-act="openTv">📺 전광판</button><button class="btn" data-act="unpublish">공개 취소</button></div></div>';
+  }
+  return h;
+}
+
+// --- 공개 · 징수표 ---
+function payHtml() {
+  var d = A.data, r = d.round, st = r.status, res = d.result;
+  if (!res) return '<div class="card"><p class="muted">자리를 뽑은 뒤에 징수표가 만들어져요.</p></div>';
+  var paid = r.paid || {}, total = 0, got = 0;
+  var rows = res.students.slice().sort(function (a, b) { return int(a.no) - int(b.no); }).map(function (s) {
+    total += s.charge; if (paid[s.no]) got += s.charge;
+    var br = [s.c1 ? '1지망 ' + s.c1.amount : '', s.c2 ? '2지망 ' + s.c2.amount : '', s.friend ? '친구 ' + s.friend.amount : ''].filter(Boolean).join(' + ');
+    return '<tr><td><b>' + s.no + '</b></td><td>' + esc(s.name) + '</td><td>' + esc(s.seat) + '</td><td class="small muted">' + (s.via === 'fixed' ? '교사 고정 (차감 없음)' : br || '-') + '</td><td><b>' + s.charge + '</b></td><td>' + s.money + ' → ' + s.remain + '</td>' +
+      '<td class="noprint"><label><input type="checkbox" data-act="paid" data-no="' + s.no + '"' + (paid[s.no] ? ' checked' : '') + (s.charge ? '' : ' disabled') + '> 받음</label></td></tr>';
+  }).join('');
+  var h = '<div class="card noprint"><div class="row">' + (st === 'published' ? '<span class="pill ok">결과 공개 중</span>' : '<span class="pill warn">아직 비공개</span> <button class="btn ok" data-act="publish">📢 결과 공개</button>') +
+    '<button class="btn pri" data-act="openTv">📺 전광판 열기</button><button class="btn" data-act="print">🖨 징수표 인쇄</button></div></div>';
+  h += '<div class="card" id="printArea"><h2>' + GRADE + '학년 ' + r.cls + '반 ' + esc(r.month) + ' 자리바꾸기 — 가원 징수표</h2><p class="small">넣은 가원은 결과와 상관없이 모두 걷어요. 받은 금액 <b>' + got + '</b> / 걷을 금액 <b>' + total + '</b>가원</p>' +
+    '<table><tr><th>번호</th><th>이름</th><th>자리</th><th>넣은 내역</th><th>낼 가원</th><th>가진 → 남는</th><th class="noprint">받음</th></tr>' + rows + '</table></div>';
+  return h;
+}
+
+function tvHtml() {
+  var d = A.data, r = d.round, res = d.result;
+  if (!res) return '';
+  var name = {}; res.students.forEach(function (s) { name[s.no] = s.name; });
+  var occ = {}; res.seats.forEach(function (x) { occ[x.seat] = x.no; });
+  return '<div class="tv"><button class="btn close" data-act="closeTv">닫기 ✕</button>' +
+    (r.status !== 'published' ? '<div class="notice warn center" style="max-width:520px;margin:0 auto 10px">미리보기 — 아직 학생에게 공개되지 않았어요</div>' : '') +
+    '<h1>' + GRADE + '학년 ' + r.cls + '반 ' + esc(r.month) + ' 자리</h1>' +
+    mapHtml(r.layout, { seat: function (sid, u, st2) {
+      if (!st2.active) return null;
+      var no = occ[sid];
+      return { html: '<div class="sid">' + sid + '</div><div class="nm">' + (no ? esc(name[no]) : '') + '</div>' };
+    } }) + '</div>';
+}
+
+function adminClick(e) {
+  var t = e.target.closest('[data-act],[data-seat]');
+  if (!t) return;
+  var act = t.dataset.act;
+  if (!act && t.dataset.seat) return adminSeat(t.dataset.seat);
+  switch (act) {
+    case 'login': A.pw = (document.getElementById('pw') || {}).value || ''; return loadOverview();
+    case 'logout': ss('seat4:pw', null); A.pw = null; stopAdminPoll(); A.view = 'login'; return render();
+    case 'refreshHome': return loadOverview();
+    case 'home': stopAdminPoll(); A.view = 'home'; return render();
+    case 'openCls': A.cls = int(t.dataset.cls); A.view = 'class'; return render();
+    case 'backCls': stopAdminPoll(); A.view = 'loading'; render(); return api('adminOverview', A.pw).then(function (r) { A.ov = r; A.cls = A.data.round.cls; A.view = 'class'; render(); });
+    case 'createRound': return createRound(t);
+    case 'openRound': return openRound(t.dataset.rid);
+    case 'reloadRound': return openRound(A.rid, true);
+    case 'tab': A.tab = t.dataset.tab; A.sel = null; A.editRow = null; return render();
+    case 'uSize': A.draft.layout.units[int(t.dataset.i)] = Math.max(1, Math.min(8, A.draft.layout.units[int(t.dataset.i)] + int(t.dataset.d))); cleanDisabled(); return render();
+    case 'uDel': if (A.draft.layout.units.length > 1) A.draft.layout.units.splice(int(t.dataset.i), 1); cleanDisabled(); return render();
+    case 'uAdd': A.draft.layout.units.push(int(t.dataset.n)); return render();
+    case 'saveSetup': return mutate('adminSaveSetup', [A.draft.layout, A.draft.config], t);
+    case 'copyLink': return copyLink();
+    case 'rowEdit': A.editRow = t.dataset.no; return render();
+    case 'rowNew': A.editRow = '__new'; return render();
+    case 'rowCancel': A.editRow = null; return render();
+    case 'rowSave': return saveRow(t);
+    case 'rowDel': return modal('삭제할까요?', t.dataset.no + '번 학생과 그 학생의 신청서가 지워져요.', '삭제', { danger: true }).then(function (y) { if (y) mutate('adminDeleteStudent', [t.dataset.no], t); });
+    case 'chk': A.checked[t.dataset.no] = t.checked; return;
+    case 'toApply': return modal('자리 신청을 시작할까요?', '책상 위 가원과 입력한 가원을 확인했나요?<br>시작하면 학생 화면이 자리 신청으로 넘어가요.', '시작').then(function (y) { if (y) mutate('adminSetStatus', ['apply'], t).then(function (r) { if (r) { A.tab = 'apply'; render(); } }); });
+    case 'toRegister': return mutate('adminSetStatus', ['register'], t);
+    case 'tAdd': saveTeacherInputs(); A.teacherDraft[t.dataset.k].push(t.dataset.k === 'fixed' ? { no: '', seat: '' } : { a: '', b: '' }); return render();
+    case 'tDel': saveTeacherInputs(); A.teacherDraft[t.dataset.k].splice(int(t.dataset.i), 1); return render();
+    case 'saveTeacher': return saveTeacher(t);
+    case 'toClosed': return modal('신청을 마감할까요?', '마감하면 학생은 신청을 고칠 수 없어요.', '마감').then(function (y) { if (y) mutate('adminSetStatus', ['closed'], t).then(function (r) { if (r) { A.tab = 'draw'; render(); } }); });
+    case 'toApply2': return mutate('adminSetStatus', ['apply'], t).then(function (r) { if (r) { A.tab = 'apply'; render(); } });
+    case 'draw': return mutate('adminDraw', [], t);
+    case 'redraw': return modal('다시 뽑을까요?', '지금 결과와 수기 변경이 모두 사라지고 새로 뽑아요. (기록에는 남아요)', '다시 뽑기').then(function (y) { if (y) { A.sel = null; mutate('adminDraw', [], t); } });
+    case 'publish': return modal('결과를 공개할까요?', '학생 화면에 자리와 낼 가원이 보여요.', '공개').then(function (y) { if (y) mutate('adminSetStatus', ['published'], t).then(function (r) { if (r) { A.tab = 'pay'; render(); } }); });
+    case 'unpublish': return modal('공개를 취소할까요?', '학생 화면에서 결과가 다시 숨겨져요.', '공개 취소', { danger: true }).then(function (y) { if (y) mutate('adminSetStatus', ['drawn'], t); });
+    case 'toApply3': return modal('신청을 다시 받을까요?', '뽑은 결과가 지워지고 신청 단계로 돌아가요.', '다시 받기', { danger: true }).then(function (y) { if (y) mutate('adminSetStatus', ['apply'], t).then(function (r) { if (r) { A.tab = 'apply'; render(); } }); });
+    case 'openTv': A.tv = true; return render();
+    case 'closeTv': A.tv = false; return render();
+    case 'print': return window.print();
+    case 'paid': return mutate('adminSetPaid', [t.dataset.no, t.checked], null);
+    case 'deleteRound': return modal('이 회차를 삭제할까요?', '되돌릴 수 없어요. 계속하려면 <b>삭제</b> 라고 써 주세요.<input type="text" style="margin-top:10px">', '삭제', { danger: true }).then(function (v) {
+      if (!v) return; api('adminDeleteRound', A.pw, A.rid, String(v).trim()).then(function (r) { A.ov = r; toast('삭제했어요.', 'ok'); A.view = 'class'; stopAdminPoll(); render(); }).catch(function (e) { toast(e.message, 'bad'); });
+    });
+  }
+}
+function cleanDisabled() {
+  var L = E.buildLayout(A.draft.layout);
+  A.draft.layout.disabled = (A.draft.layout.disabled || []).filter(function (s) { return L.seats[s]; });
+  var sg = A.draft.config.seatGender || {};
+  Object.keys(sg).forEach(function (s) { if (!L.seats[s]) delete sg[s]; });
+}
+function adminSeat(sid) {
+  if (A.view !== 'round') return;
+  if (A.tab === 'setup' && A.data.round.status === 'register') {
+    var lay = A.draft.layout, cfg = A.draft.config;
+    lay.disabled = lay.disabled || []; cfg.seatGender = cfg.seatGender || {};
+    if (A.setupMode === 'gender' && cfg.genderMode === 'seat') {
+      var g = cfg.seatGender[sid];
+      cfg.seatGender[sid] = g === 'M' ? 'F' : (g === 'F' ? undefined : 'M');
+      if (!cfg.seatGender[sid]) delete cfg.seatGender[sid];
+    } else {
+      var i = lay.disabled.indexOf(sid);
+      if (i >= 0) lay.disabled.splice(i, 1); else lay.disabled.push(sid);
+    }
+    return render();
+  }
+  if (A.tab === 'draw' && A.data.round.status === 'drawn') {
+    if (!A.sel) { A.sel = sid; return render(); }
+    if (A.sel === sid) { A.sel = null; return render(); }
+    var a = A.sel; A.sel = null;
+    return mutate('adminSwap', [a, sid], null);
+  }
+}
+function adminChange(e) {
+  var t = e.target;
+  if (A.view !== 'round') return;
+  var dr = A.draft;
+  if (t.id === 'presetSel' && t.value) { var p = E.PRESETS[t.value]; dr.layout = { units: p.units.slice(), perRow: p.perRow, disabled: [], boardPos: dr.layout.boardPos || 'bottom' }; cleanDisabled(); return render(); }
+  if (t.id === 'perRow') { dr.layout.perRow = int(t.value, 3); return render(); }
+  if (t.id === 'boardPos') { dr.layout.boardPos = t.value; return render(); }
+  if (t.id === 'seatMode') { dr.config.genderMode = t.checked ? 'seat' : 'auto'; dr.config.seatGender = dr.config.seatGender || {}; A.setupMode = t.checked ? 'gender' : 'off'; return render(); }
+  if (t.id === 'pairRule') { dr.config.pairRule = t.value; return; }
+  if (t.id === 'groupRule') { dr.config.groupRule = t.value; return; }
+  if (t.id === 'rt') { dr.config.randomTickets = int(t.value, 10); return render(); }
+  if (t.id === 'maxBid') { dr.config.maxBid = Math.max(0, Math.min(100, int(t.value, 20))); return render(); }
+  if (t.name === 'sm') { A.setupMode = t.value; return; }
+  if (t.dataset.tf) { saveTeacherInputs(); return; }
+}
+function saveTeacherInputs() {
+  document.querySelectorAll('[data-tf]').forEach(function (el) {
+    var arr = A.teacherDraft[el.dataset.tf], i = int(el.dataset.i);
+    if (arr[i]) arr[i][el.dataset.f] = el.value;
+  });
+}
+function saveTeacher(btn) {
+  saveTeacherInputs();
+  var td = A.teacherDraft, fixed = {}, sep = [];
+  var seats = {};
+  for (var i = 0; i < td.fixed.length; i++) {
+    var f = td.fixed[i]; if (!f.no || !f.seat) continue;
+    if (seats[f.seat]) return toast(f.seat + ' 자리에 두 명을 고정할 수 없어요.', 'bad');
+    if (fixed[f.no]) return toast(f.no + '번을 두 자리에 고정할 수 없어요.', 'bad');
+    seats[f.seat] = 1; fixed[f.no] = f.seat;
+  }
+  td.separate.forEach(function (p) { if (p.a && p.b && p.a !== p.b) sep.push([p.a, p.b]); });
+  return mutate('adminSaveTeacher', [{ fixed: fixed, separate: sep }], btn).then(function (r) { if (r) { A.teacherDraft = teacherToDraft(r.round.teacher); render(); } });
+}
+function saveRow(btn) {
+  var s = { no: document.getElementById('erNo').value, name: document.getElementById('erName').value, gender: document.getElementById('erG').value, money: document.getElementById('erMoney').value };
+  var orig = btn.dataset.no;
+  mutate('adminUpsertStudent', [s, orig || null], btn).then(function (r) { if (r) { A.editRow = null; render(); } });
+}
+function createRound(btn) {
+  var month = (document.getElementById('newMonth') || {}).value || '';
+  var cr = document.getElementById('copyRoster'), cs = document.getElementById('copySep');
+  busy(btn, true);
+  api('adminCreateRound', A.pw, A.cls, month, { copyRoster: cr ? cr.checked : false, copySeparate: cs ? cs.checked : false }).then(function (r) {
+    toast(A.cls + '반 ' + month + ' 자리바꾸기를 만들었어요.', 'ok');
+    return api('adminOverview', A.pw).then(function (ov) { A.ov = ov; return openRound(r.roundId); });
+  }).catch(function (e) { busy(btn, false); toast(e.message, 'bad'); });
+}
+function copyLink() {
+  var box = document.getElementById('linkBox');
+  var done = function () { toast('주소를 복사했어요.', 'ok'); };
+  try { navigator.clipboard.writeText(box.value).then(done, function () { box.select(); document.execCommand('copy'); done(); }); }
+  catch (err) { box.select(); try { document.execCommand('copy'); done(); } catch (e2) { toast('주소를 직접 선택해서 복사해 주세요.', 'info'); } }
+}
+function adminKey(e) { if (e.key === 'Enter' && e.target.id === 'pw') { var b = document.querySelector('[data-act=login]'); if (b) b.click(); } }
+
+// ===========================================================================
+function render() {
+  var y = window.scrollY;
+  root.innerHTML = MODE === 'admin' ? renderAdmin() : renderStudent();
+  window.scrollTo(0, y);
+}
+root.addEventListener('click', function (e) { (MODE === 'admin' ? adminClick : studentClick)(e); });
+root.addEventListener('change', function (e) { (MODE === 'admin' ? adminChange : studentChange)(e); });
+root.addEventListener('keydown', function (e) { (MODE === 'admin' ? adminKey : studentKey)(e); });
+if (MODE === 'admin') adminStart(); else studentStart();
+})();
+</script>
+</body>
+</html>
