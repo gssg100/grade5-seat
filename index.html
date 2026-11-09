@@ -927,16 +927,20 @@ function mapHtml(spec, opt) {
   var pos = (opt && opt.boardPos) || (spec && spec.boardPos) || 'bottom';
   var board = '<div class="board' + (pos === 'top' ? ' top' : '') + '">칠 판</div>';
   var h = (pos === 'top' ? board : '') + '<div class="map" style="grid-template-columns:repeat(' + L.perRow + ',minmax(0,1fr))">';
+  // 12반 5인 모둠: 맨 앞 1자리(상석) + 나머지 4자리는 2×2로 마주 보기
+  var curCls = (S.info && S.info.round && S.info.round.cls) || (A.data && A.data.round && A.data.round.cls) || 0;
   L.units.forEach(function (u) {
-    var cols = u.size <= 2 ? u.size : (u.size <= 4 ? 2 : (u.size <= 6 ? 3 : 4));
+    var head = u.size === 5 && curCls === 12;
+    var cols = head ? 2 : (u.size <= 2 ? u.size : (u.size <= 4 ? 2 : (u.size <= 6 ? 3 : 4)));
     var kind = u.size === 1 ? '혼자 자리' : (u.size === 2 ? '짝' : '모둠');
     h += '<div class="unit"><div class="ut">' + u.id + '번 ' + kind + '</div><div class="seats" style="grid-template-columns:repeat(' + cols + ',1fr)">';
-    u.seats.forEach(function (sid) {
+    u.seats.forEach(function (sid, k) {
       var st = L.seats[sid];
       var o = (opt && opt.seat) ? (opt.seat(sid, u, st) || {}) : {};
+      var isHead = head && k === 0;
       var cls = 'seat' + (st.active ? '' : ' off') + (o.cls ? ' ' + o.cls : '');
       var inner = o.html != null ? o.html : '<div class="sid">' + sid + '</div>' + (st.active ? '' : '<div class="sub">사용 안 함</div>');
-      h += '<div class="' + cls + '" data-seat="' + sid + '">' + inner + '</div>';
+      h += '<div class="' + cls + '" data-seat="' + sid + '"' + (isHead ? ' style="grid-column:1 / span 2;max-width:60%;margin:0 auto;width:100%"' : '') + '>' + inner + (isHead ? '<div class="sub">상석</div>' : '') + '</div>';
     });
     h += '</div></div>';
   });
